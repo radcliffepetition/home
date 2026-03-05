@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🥓 Bacon Brawlers — Preview</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥓</text></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap">
+<style>
+:root {
+  --bacon-red:#c0392b; --bacon-brown:#7B3F00; --gold:#f1c40f;
+  --bg:#1a0a00; --panel:#2d1200; --panel2:#3d1a00; --text:#ffeedd;
+  --hp-green:#2ecc71; --hp-yellow:#f39c12; --hp-red:#e74c3c;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text);
+  min-height:100vh; display:flex; flex-direction:column; align-items:center;
+  justify-content:flex-start; padding:24px 0 60px;
+  overflow-x:hidden; overflow-y:auto; position:relative;
+}
+body::before{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(ellipse at 20% 30%,rgba(192,57,43,.18) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 70%,rgba(243,156,18,.12) 0%,transparent 60%);
+}
+.bg-bits{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bit{position:absolute;opacity:.07;animation:floatBit linear infinite;}
+@keyframes floatBit{from{transform:translateY(110vh) rotate(0deg);}to{transform:translateY(-10vh) rotate(360deg);}}
+
+/* ── Fake browser ── */
+#fake-page{
+  position:relative; width:900px; max-width:98vw; min-height:380px;
+  background:#f0ede8; border-radius:12px; z-index:1; display:flex; flex-direction:column;
+  box-shadow:0 0 80px rgba(192,57,43,.5),0 0 0 2px var(--bacon-brown); overflow:hidden;
+}
+.browser-bar{background:#2c2c2c;padding:8px 14px;display:flex;align-items:center;gap:8px;}
+.browser-dots span{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;}
+.browser-dots .r{background:#ff5f57;}.browser-dots .y{background:#febc2e;}.browser-dots .g{background:#28c840;}
+.browser-url{flex:1;background:#3c3c3c;border-radius:6px;padding:4px 10px;font-size:12px;color:#aaa;font-family:monospace;}
+.page-content{padding:28px 36px;flex:1;position:relative;}
+.page-content h1{font-size:1.5rem;color:#222;margin-bottom:10px;font-family:Georgia,serif;}
+.page-content p{color:#555;font-size:.88rem;line-height:1.7;margin-bottom:8px;}
+.page-content .tag{display:inline-block;background:#e74c3c;color:white;padding:2px 8px;border-radius:4px;font-size:.7rem;margin-bottom:10px;}
+
+/* ── Bacon icon ── */
+#bb-icon{
+  position:absolute; bottom:22px; right:22px; width:64px; height:64px;
+  border-radius:50%; background:radial-gradient(circle at 35% 35%,#f39c12,#c0392b);
+  border:3px solid #f1c40f; cursor:pointer; display:none; align-items:center; justify-content:center;
+  z-index:10; animation:iconPulse 2s ease-in-out infinite; transition:transform .15s; user-select:none;
+}
+#bb-icon:hover{transform:scale(1.12);}
+.bb-notif{
+  position:absolute;top:-4px;right:-4px;width:20px;height:20px;
+  background:#f1c40f;border-radius:50%;font-size:.65rem;color:#222;font-weight:900;
+  display:flex;align-items:center;justify-content:center;border:2px solid #fff;
+  animation:ping 1.5s ease-in-out infinite; font-family:sans-serif;
+}
+@keyframes iconPulse{
+  0%,100%{box-shadow:0 4px 20px rgba(192,57,43,.7),0 0 0 0 rgba(243,156,18,.4);}
+  50%{box-shadow:0 4px 30px rgba(192,57,43,.9),0 0 0 12px rgba(243,156,18,0);}
+}
+@keyframes ping{0%,100%{transform:scale(1);}50%{transform:scale(1.2);}}
+
+/* ── Debug timer ── */
+#bb-timer{
+  position:fixed; bottom:96px; right:24px; z-index:2147483646;
+  background:rgba(0,0,0,.75); color:#f1c40f; font-size:11px;
+  font-family:monospace; padding:4px 8px; border-radius:6px;
+  border:1px solid #7B3F00; pointer-events:none; line-height:1.4;
+}
+
+/* ── Battle overlay ── */
+#bb-overlay{
+  position:fixed; inset:0; background:rgba(10,0,0,.88);
+  display:flex; align-items:center; justify-content:center;
+  z-index:100; opacity:0; pointer-events:none; transition:opacity .3s;
+  font-family:'Nunito',sans-serif;
+}
+#bb-overlay.active{opacity:1;pointer-events:all;}
+#bb-window{
+  width:540px; max-width:96vw; background:var(--panel); border:3px solid var(--bacon-brown);
+  border-radius:16px; overflow:hidden;
+  box-shadow:0 0 60px rgba(192,57,43,.6),inset 0 1px 0 rgba(255,255,255,.05);
+  transform:scale(.8) translateY(40px); transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+#bb-overlay.active #bb-window{transform:scale(1) translateY(0);}
+.bb-header{
+  background:linear-gradient(135deg,var(--bacon-red),#8B0000); padding:12px 20px;
+  display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(--bacon-brown);
+}
+.bb-title{font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:2px;color:var(--gold);text-shadow:2px 2px 0 #000;}
+.bb-close{background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;opacity:.7;transition:opacity .2s;line-height:1;padding:0;}
+.bb-close:hover{opacity:1;}
+
+/* ── Arena ── */
+.bb-arena{
+  background:linear-gradient(180deg,#0d0500 0%,#1c0800 60%,#2a1000 100%);
+  padding:20px 24px 14px; display:flex; align-items:flex-end;
+  justify-content:space-between; gap:10px; min-height:210px; position:relative; overflow:hidden;
+}
+.bb-arena::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(180deg,transparent,rgba(120,40,0,.4));}
+.bb-fighter{display:flex;flex-direction:column;align-items:center;gap:6px;z-index:1;}
+.bb-fighter-label{font-size:.7rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#888;}
+.bb-fighter-name{font-family:'Bangers',cursive;font-size:1rem;letter-spacing:1px;color:var(--text);}
+.bb-player-sprite{font-size:4rem;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.8));}
+.bb-player-sprite.bb-attack{animation:pAttack .35s ease;}
+.bb-player-sprite.bb-hit{animation:pHit .35s ease;}
+@keyframes pAttack{0%{transform:translateX(0);}45%{transform:translateX(26px) scale(1.15);}100%{transform:translateX(0) scale(1);}}
+@keyframes pHit{0%,100%{transform:translateX(0);}25%{transform:translateX(-7px);}75%{transform:translateX(7px);}}
+#bb-enemy-wrap{filter:drop-shadow(0 6px 16px rgba(0,0,0,.9));animation:enemyFloat 2.8s ease-in-out infinite;display:block;line-height:0;}
+#bb-enemy-wrap.bb-attack{animation:eAttack .35s ease !important;}
+#bb-enemy-wrap.bb-hit{animation:eHit .42s ease !important;}
+@keyframes enemyFloat{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-11px) rotate(2deg);}}
+@keyframes eAttack{0%{transform:translateX(0);}45%{transform:translateX(-28px) scale(1.15);}100%{transform:translateX(0) scale(1);}}
+@keyframes eHit{
+  0%{transform:translateX(0);}
+  20%{transform:translateX(11px) rotate(7deg);filter:drop-shadow(0 0 16px #f00) brightness(2);}
+  55%{transform:translateX(-9px) rotate(-5deg);filter:drop-shadow(0 0 10px #f40) brightness(1.6);}
+  80%{transform:translateX(5px) rotate(2deg);}
+  100%{transform:translateX(0) rotate(0);}
+}
+.bb-blink-l{animation:bbBlink 4s ease-in-out infinite;}
+.bb-blink-r{animation:bbBlink 4s ease-in-out infinite;animation-delay:.2s;}
+.bb-blink-l.bb-angry,.bb-blink-r.bb-angry{animation-name:bbBlinkFast;}
+@keyframes bbBlink{0%,43%,49%,100%{r:5.5px;}46%{r:9.5px;}}
+@keyframes bbBlinkFast{0%,35%,41%,100%{r:5.5px;}38%{r:9.5px;}}
+.bb-steam{animation:bbSteam 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom center;}
+.bb-steam.s2{animation-delay:.8s;}.bb-steam.s3{animation-delay:1.6s;}
+@keyframes bbSteam{0%{opacity:0;transform:translateY(0);}30%{opacity:.55;transform:translateY(-7px);}100%{opacity:0;transform:translateY(-24px);}}
+.bb-sweat{animation:bbSweat 3.8s ease-in-out infinite;}
+@keyframes bbSweat{0%,50%,100%{opacity:0;transform:translateY(0);}55%{opacity:1;}88%{opacity:.7;transform:translateY(11px);}94%{opacity:0;transform:translateY(14px);}}
+.bb-boss-ring{animation:bossGlow 1.6s ease-in-out infinite;}
+@keyframes bossGlow{0%,100%{opacity:.25;}50%{opacity:.65;}}
+.bb-vs{font-family:'Bangers',cursive;font-size:2rem;color:var(--gold);text-shadow:2px 2px 0 #000,0 0 20px rgba(243,156,18,.5);flex-shrink:0;align-self:center;}
+
+/* ── HP bars ── */
+.bb-hp-section{padding:10px 24px;background:rgba(0,0,0,.3);}
+.bb-hp-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.bb-hp-label{font-size:.7rem;font-weight:900;color:#999;width:32px;text-align:right;flex-shrink:0;}
+.bb-hp-bar-wrap{flex:1;height:14px;background:#111;border-radius:7px;overflow:hidden;border:1px solid #333;}
+.bb-hp-bar{height:100%;border-radius:7px;transition:width .5s cubic-bezier(.4,0,.2,1),background .5s;}
+.bb-hp-val{font-size:.7rem;font-weight:900;width:52px;text-align:left;color:#ccc;flex-shrink:0;}
+
+/* ── Battle log ── */
+.bb-log{
+  background:rgba(0,0,0,.4);margin:0 24px 10px;border-radius:8px;
+  padding:8px 12px;min-height:50px;max-height:66px;overflow-y:auto;border:1px solid #3a1a00;
+}
+.bb-log-line{font-size:.78rem;color:#ddc;line-height:1.55;animation:fadeIn .2s ease;}
+.bb-log-line.highlight{color:var(--gold);font-weight:700;}
+.bb-log-line.bad{color:#e74c3c;}.bb-log-line.good{color:#2ecc71;}
+.bb-log-line.crit{color:#ff6a00;font-weight:900;font-size:.84rem;}
+.bb-log-line.weak{color:#999;font-style:italic;}
+.bb-log-line.rarity-common{color:#aaaaaa;}
+.bb-log-line.rarity-uncommon{color:#2ecc71;}
+.bb-log-line.rarity-rare{color:#3498db;}
+.bb-log-line.rarity-epic{color:#9b59b6;}
+.bb-log-line.rarity-legendary{color:#f1c40f;font-weight:700;}
+.bb-rarity-badge{
+  display:inline-block;padding:2px 10px;border-radius:20px;
+  font-size:.75rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+/* ── Actions ── */
+.bb-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 24px 18px;}
+.bb-btn{
+  background:var(--panel2);border:2px solid var(--bacon-brown);border-radius:10px;
+  padding:10px 8px;cursor:pointer;color:var(--text);font-family:'Nunito',sans-serif;
+  font-size:.82rem;font-weight:700;text-align:left;transition:all .15s;
+  display:flex;flex-direction:column;gap:2px;
+}
+.bb-btn:hover:not(:disabled){background:#5a2500;border-color:var(--gold);transform:translateY(-1px);box-shadow:0 4px 12px rgba(192,57,43,.4);}
+.bb-btn:disabled{opacity:.4;cursor:default;}
+.bb-btn-icon{font-size:1.2rem;margin-bottom:2px;}
+.bb-btn-name{font-size:.85rem;}.bb-btn-desc{font-size:.68rem;color:#aaa;}
+
+/* ── Result screen ── */
+.bb-result{display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;text-align:center;gap:14px;}
+.bb-result.show{display:flex;}
+.bb-result-emoji{font-size:4rem;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
+.bb-result-title{font-family:'Bangers',cursive;font-size:2.2rem;letter-spacing:3px;text-shadow:2px 2px 0 #000;}
+.bb-result-sub{font-size:.9rem;color:#bbb;max-width:320px;}
+.bb-result-btn{
+  background:linear-gradient(135deg,var(--bacon-red),var(--bacon-brown));border:2px solid var(--gold);
+  border-radius:10px;padding:10px 28px;color:var(--gold);font-family:'Bangers',cursive;
+  font-size:1.2rem;letter-spacing:2px;cursor:pointer;transition:transform .15s,box-shadow .15s;
+  box-shadow:0 4px 14px rgba(0,0,0,.5);
+}
+.bb-result-btn:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(192,57,43,.6);}
+@keyframes popIn{from{transform:scale(0) rotate(-20deg);}to{transform:scale(1) rotate(0deg);}}
+
+/* ── Team panel ── */
+#team-panel{
+  margin-top:16px;width:900px;max-width:98vw;
+  background:var(--panel);border:2px solid var(--bacon-brown);border-radius:12px;padding:14px 20px;z-index:1;
+}
+.team-title{font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--gold);margin-bottom:10px;}
+.team-grid{display:flex;flex-wrap:wrap;gap:10px;}
+.team-card{
+  background:var(--panel2);border:2px solid var(--bacon-brown);border-radius:10px;
+  padding:8px 14px;display:flex;align-items:center;gap:10px;
+  animation:slideIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+.card-name{font-family:'Bangers',cursive;font-size:.95rem;letter-spacing:1px;color:var(--gold);}
+.card-rarity{font-size:.62rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+.card-lv{font-size:.68rem;color:#aaa;}
+.empty-team{font-size:.8rem;color:#555;font-style:italic;}
+@keyframes slideIn{from{transform:scale(.6);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+/* ── Damage pops ── */
+.bb-pop{position:fixed;font-family:'Bangers',cursive;pointer-events:none;z-index:999;text-shadow:2px 2px 0 #000;}
+.bb-pop.dmg{font-size:1.7rem;color:#ffd700;animation:popDmg .9s ease-out forwards;}
+.bb-pop.crit{font-size:2.5rem;color:#ff4400;animation:popCrit 1.1s ease-out forwards;}
+.bb-pop.weak{font-size:1.4rem;color:#aaa;animation:popWeak .85s ease-out forwards;}
+.bb-pop.miss{font-size:1.8rem;color:#ddd;animation:popMiss .85s ease-out forwards;}
+@keyframes popDmg{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-65px) scale(1.4);}}
+@keyframes popCrit{0%{opacity:1;transform:translateY(0) scale(1.3) rotate(-4deg);}60%{transform:translateY(-42px) scale(2) rotate(4deg);}100%{opacity:0;transform:translateY(-80px) scale(2.3);}}
+@keyframes popWeak{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-44px) scale(.8);}}
+@keyframes popMiss{0%{opacity:1;transform:translateY(0) rotate(-6deg);}100%{opacity:0;transform:translateY(-50px) rotate(12deg) scale(1.3);}}
+@keyframes screenShake{0%,100%{transform:none;}20%{transform:translate(-5px,2px);}40%{transform:translate(5px,-3px);}60%{transform:translate(-3px,4px);}80%{transform:translate(4px,-2px);}}
+.bb-shake{animation:screenShake .38s ease;}
+</style>
+</head>
+<body>
+
+<div class="bg-bits" id="bgBits"></div>
+
+<div id="fake-page">
+  <div class="browser-bar">
+    <div class="browser-dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+    <div class="browser-url">🔒 www.definitely-a-normal-website.com/article/the-truth-about-breakfast</div>
+  </div>
+  <div class="page-content">
+    <span class="tag">BREAKING NEWS</span>
+    <h1>Scientists Baffled: Bacon Strips Gaining Sentience, Declaring War on Humanity</h1>
+    <p>In what experts are calling the most delicious crisis of our generation, strips of cooked bacon across the globe have reportedly begun moving on their own, forming primitive battle stances and challenging unsuspecting web browsers to combat.</p>
+    <p>"I thought it was just the grease cooling down," said one witness. "But then it winked at me. Bacon doesn't wink. It just... doesn't." Local authorities advise citizens to remain calm and under no circumstances challenge a bacon strip to an arm-wrestling contest.</p>
+    <p>More at 11. Please also eat a salad.</p>
+  </div>
+  <div id="bb-icon" onclick="onIconClick()">
+    <svg width="38" height="38" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6,70 Q18,48 36,64 Q54,80 72,57 Q88,34 112,52 L112,82 Q88,62 72,85 Q54,102 36,92 Q18,96 6,96 Z" fill="#c0392b"/>
+      <path d="M6,70 Q18,48 36,64 Q54,80 72,57 Q88,34 112,52 L112,62 Q88,44 72,67 Q54,90 36,74 Q18,58 6,80 Z" fill="#e8d08a" opacity=".9"/>
+      <path d="M6,84 Q18,79 36,82 Q54,94 72,78 Q88,58 112,72 L112,82 Q88,62 72,85 Q54,102 36,92 Q18,96 6,96 Z" fill="#e8d08a" opacity=".7"/>
+      <circle cx="42" cy="78" r="9" fill="white"/>
+      <circle cx="42" cy="78" r="5.5" fill="#2c1810"/>
+      <circle cx="44" cy="76" r="2" fill="white" opacity=".85"/>
+      <circle cx="76" cy="78" r="9" fill="white"/>
+      <circle cx="76" cy="78" r="5.5" fill="#2c1810"/>
+      <circle cx="78" cy="76" r="2" fill="white" opacity=".85"/>
+      <path d="M36,88 Q54,98 72,88" fill="none" stroke="#1a0a00" stroke-width="3.5" stroke-linecap="round"/>
+    </svg>
+    <div class="bb-notif">!</div>
+  </div>
+</div>
+
+<div id="bb-timer"></div>
+
+<div id="team-panel">
+  <div class="team-title">🥓 YOUR BACON SQUAD</div>
+  <div class="team-grid" id="teamGrid"><div class="empty-team">No bacons yet — win battles to recruit them!</div></div>
+</div>
+
+<div id="bb-overlay">
+  <div id="bb-window">
+    <div class="bb-header">
+      <div class="bb-title">🥓 BACON BRAWL!</div>
+      <button class="bb-close" onclick="closeBattle()">✕</button>
+    </div>
+    <div id="bb-combat-view">
+      <div class="bb-arena">
+        <div class="bb-fighter">
+          <div class="bb-fighter-label">YOU</div>
+          <div class="bb-player-sprite" id="bb-player-sprite">🧑‍🍳</div>
+          <div class="bb-fighter-name">Chef Dave</div>
+        </div>
+        <div class="bb-vs">VS</div>
+        <div class="bb-fighter">
+          <div class="bb-fighter-label">ENEMY</div>
+          <div id="bb-enemy-wrap"></div>
+          <div class="bb-fighter-name" id="bb-enemy-name">???</div>
+        </div>
+      </div>
+      <div class="bb-hp-section">
+        <div class="bb-hp-row">
+          <div class="bb-hp-label">YOU</div>
+          <div class="bb-hp-bar-wrap"><div class="bb-hp-bar" id="bb-player-bar" style="width:100%;background:#2ecc71"></div></div>
+          <div class="bb-hp-val" id="bb-player-val">100/100</div>
+        </div>
+        <div class="bb-hp-row">
+          <div class="bb-hp-label">FOE</div>
+          <div class="bb-hp-bar-wrap"><div class="bb-hp-bar" id="bb-enemy-bar" style="width:100%;background:#e74c3c"></div></div>
+          <div class="bb-hp-val" id="bb-enemy-val">??/??</div>
+        </div>
+      </div>
+      <div class="bb-log" id="bb-log"></div>
+      <div class="bb-actions">
+        <button class="bb-btn" onclick="playerAction('spatula')"><div class="bb-btn-icon">🍳</div><div class="bb-btn-name">Spatula Smack</div><div class="bb-btn-desc">Reliable — 15–25 dmg</div></button>
+        <button class="bb-btn" onclick="playerAction('pepper')"><div class="bb-btn-icon">🌶️</div><div class="bb-btn-name">Pepper Blast</div><div class="bb-btn-desc">Spicy — 20–35 dmg</div></button>
+        <button class="bb-btn" onclick="playerAction('pan')"><div class="bb-btn-icon">🥘</div><div class="bb-btn-name">Pan Slam</div><div class="bb-btn-desc">Heavy — 30–45 dmg</div></button>
+        <button class="bb-btn" onclick="playerAction('taunt')"><div class="bb-btn-icon">😤</div><div class="bb-btn-name">Taunt</div><div class="bb-btn-desc">Risky — enrages bacon!</div></button>
+      </div>
+    </div>
+    <div class="bb-result" id="bb-result">
+      <div class="bb-result-emoji" id="bb-result-emoji">🏆</div>
+      <div class="bb-result-title" id="bb-result-title">YOU WIN!</div>
+      <div class="bb-result-sub" id="bb-result-sub"></div>
+      <button class="bb-result-btn" onclick="handleResultBtn()">DONE</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Background bits ───────────────────────────────────────────
+['🥓','🥓','🥓','🍳','🌶️','💥'].forEach(e => {
+  for(let i=0;i<3;i++){
+    const el=document.createElement('div'); el.className='bit'; el.textContent=e;
+    el.style.left=Math.random()*100+'%';
+    el.style.fontSize=(1+Math.random()*1.5)+'rem';
+    el.style.animationDuration=(8+Math.random()*14)+'s';
+    el.style.animationDelay=(-Math.random()*20)+'s';
+    document.getElementById('bgBits').appendChild(el);
+  }
+});
+
+// ── Enemy roster ──────────────────────────────────────────────
+const ENEMIES = [
+  { name:"Sir Sizzles-a-Lot", hp:60,  power:[8,16],  flavor:"A noble bacon of ancient grease lineage.",   rarity:"common",    bodyColor:"#c0392b", fatColor:"#e8d08a", eyeColor:"#2c1810", angryBrows:false, blush:.5,  sweat:false, boss:false, mouthPath:"36,88 Q54,98 72,88" },
+  { name:"Crispy McFry",      hp:80,  power:[12,20], flavor:"Overdone. Overconfident. Dangerous.",         rarity:"uncommon",  bodyColor:"#7a1e00", fatColor:"#b06030", eyeColor:"#000",    angryBrows:true,  blush:0,   sweat:false, boss:false, mouthPath:"36,90 Q54,83 72,90" },
+  { name:"Baron Von Rashers", hp:50,  power:[6,12],  flavor:"A thin, flimsy aristocrat of the pan.",      rarity:"common",    bodyColor:"#d4574a", fatColor:"#f0c080", eyeColor:"#3c2010", angryBrows:false, blush:.6,  sweat:true,  boss:false, mouthPath:"36,88 Q54,97 72,88" },
+  { name:"The Thick Cut",     hp:100, power:[18,28], flavor:"You feel an ominous sizzle in the air.",     rarity:"rare",      bodyColor:"#900000", fatColor:"#b05040", eyeColor:"#111",    angryBrows:true,  blush:0,   sweat:false, boss:false, mouthPath:"34,90 Q54,82 74,90" },
+  { name:"Peppered Pete",     hp:70,  power:[10,22], flavor:"Coated in black pepper and bad attitude.",   rarity:"uncommon",  bodyColor:"#a82810", fatColor:"#c88050", eyeColor:"#1a0a00", angryBrows:true,  blush:.2,  sweat:false, boss:false, mouthPath:"36,88 Q54,94 72,84" },
+  { name:"Mega-Rasher",       hp:130, power:[22,36], flavor:"BOSS BACON. Truly the final strip.",         rarity:"legendary", bodyColor:"#5a0000", fatColor:"#8a2010", eyeColor:"#cc0000", angryBrows:true,  blush:0,   sweat:false, boss:true,  mouthPath:"33,91 Q54,82 75,91" },
+];
+
+const RARITY = {
+  common:    { label:'Common',    color:'#aaaaaa', glow:'rgba(170,170,170,.35)', icon:'⚪' },
+  uncommon:  { label:'Uncommon',  color:'#2ecc71', glow:'rgba(46,204,113,.4)',   icon:'🟢' },
+  rare:      { label:'Rare',      color:'#3498db', glow:'rgba(52,152,219,.5)',   icon:'🔵' },
+  epic:      { label:'Epic',      color:'#9b59b6', glow:'rgba(155,89,182,.55)',  icon:'🟣' },
+  legendary: { label:'Legendary', color:'#f1c40f', glow:'rgba(241,196,15,.6)',   icon:'🌟' },
+};
+function getRarity(e){ return RARITY[e.rarity] || RARITY.common; }
+
+// ── Build SVG face ────────────────────────────────────────────
+function buildFace(cfg, size) {
+  size = size || 112;
+  const browL   = cfg.angryBrows ? "M28,66 Q40,59 50,65" : "M30,66 Q40,62 50,65";
+  const browR   = cfg.angryBrows ? "M58,66 Q68,59 80,65" : "M58,66 Q68,62 80,65";
+  const browCol = cfg.boss ? "#ff3333" : "#7B3F00";
+  const ang     = cfg.angryBrows ? "bb-angry" : "";
+  const sweatSVG = cfg.sweat ? `<g class="bb-sweat"><ellipse cx="100" cy="52" rx="3.2" ry="4.5" fill="#74b9ff" opacity=".9"/><polygon points="96.8,54 103.2,54 100,46" fill="#74b9ff" opacity=".9"/></g>` : '';
+  const bossRing = cfg.boss ? `<ellipse class="bb-boss-ring" cx="59" cy="76" rx="52" ry="30" fill="none" stroke="#ff2200" stroke-width="2.5"/><ellipse class="bb-boss-ring" cx="59" cy="76" rx="58" ry="34" fill="none" stroke="#ff220055" stroke-width="1.5" style="animation-delay:.8s"/>` : '';
+  const pepperDots = cfg.name.includes("Pete") ? `<circle cx="28" cy="74" r="2.2" fill="#222" opacity=".7"/><circle cx="50" cy="67" r="1.8" fill="#222" opacity=".7"/><circle cx="74" cy="70" r="2.4" fill="#222" opacity=".6"/><circle cx="42" cy="83" r="1.6" fill="#222" opacity=".6"/><circle cx="92" cy="62" r="2" fill="#222" opacity=".6"/>` : '';
+  const mustache = cfg.name.includes("Baron") ? `<path d="M45,80 Q51,75 57,79 Q63,75 69,80" fill="none" stroke="#7B3F00" stroke-width="2.2" stroke-linecap="round"/>` : '';
+  const crownSVG = cfg.boss ? `<path d="M38,38 L46,24 L59,34 L72,24 L80,38 Z" fill="${cfg.fatColor}" stroke="#ff3300" stroke-width="1.5"/><circle cx="59" cy="34" r="3.5" fill="#ff2200"/><circle cx="46" cy="25" r="2.5" fill="#ff6600"/><circle cx="72" cy="25" r="2.5" fill="#ff6600"/>` : '';
+  return `<svg width="${size}" height="${size}" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <ellipse class="bb-steam"    cx="28" cy="12" rx="4"   ry="6" fill="rgba(255,210,160,.45)"/>
+  <ellipse class="bb-steam s2" cx="56" cy="8"  rx="3.5" ry="5" fill="rgba(255,210,160,.45)"/>
+  <ellipse class="bb-steam s3" cx="86" cy="12" rx="4"   ry="6" fill="rgba(255,210,160,.45)"/>
+  ${crownSVG}${bossRing}
+  <path d="M6,70 Q18,48 36,64 Q54,80 72,57 Q88,34 112,52 L112,82 Q88,62 72,85 Q54,102 36,92 Q18,96 6,96 Z" fill="${cfg.bodyColor}"/>
+  <path d="M6,70 Q18,48 36,64 Q54,80 72,57 Q88,34 112,52 L112,62 Q88,44 72,67 Q54,90 36,74 Q18,58 6,80 Z" fill="${cfg.fatColor}" opacity=".88"/>
+  <path d="M6,84 Q18,79 36,82 Q54,94 72,78 Q88,58 112,72 L112,82 Q88,62 72,85 Q54,102 36,92 Q18,96 6,96 Z" fill="${cfg.fatColor}" opacity=".72"/>
+  <path d="M6,70 Q18,48 36,64 Q54,80 72,57 Q88,34 112,52" fill="none" stroke="#f8c06070" stroke-width="2"/>
+  ${pepperDots}
+  <path d="M${browL}" fill="none" stroke="${browCol}" stroke-width="3.5" stroke-linecap="round" id="bb-brow-l"/>
+  <path d="M${browR}" fill="none" stroke="${browCol}" stroke-width="3.5" stroke-linecap="round" id="bb-brow-r"/>
+  <circle cx="42" cy="78" r="9" fill="white"/>
+  <circle class="bb-blink-l ${ang}" id="bb-pupil-l" cx="42" cy="78" r="5.5" fill="${cfg.eyeColor}"/>
+  <circle cx="44" cy="76" r="2" fill="white" opacity=".85"/>
+  <circle cx="76" cy="78" r="9" fill="white"/>
+  <circle class="bb-blink-r ${ang}" id="bb-pupil-r" cx="76" cy="78" r="5.5" fill="${cfg.eyeColor}"/>
+  <circle cx="78" cy="76" r="2" fill="white" opacity=".85"/>
+  <path id="bb-mouth" d="M${cfg.mouthPath}" fill="none" stroke="#1a0a00" stroke-width="3.5" stroke-linecap="round"/>
+  <ellipse cx="26" cy="80" rx="7" ry="4.5" fill="#e8637a" opacity="${cfg.blush}"/>
+  <ellipse cx="90" cy="80" rx="7" ry="4.5" fill="#e8637a" opacity="${cfg.blush}"/>
+  ${mustache}${sweatSVG}
+</svg>`;
+}
+
+// ── Spawn/despawn + timer system ──────────────────────────────
+const SPAWN_MIN = 20, SPAWN_MAX = 50;
+const VISIBLE_MIN = 15, VISIBLE_MAX = 30;
+let spawnTimeout = null, despawnTimeout = null;
+let timerInterval = null, timerDeadline = 0, timerMode = '';
+let iconVisible = false, battleOpen = false;
+
+function rndBetween(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+
+function updateTimerDisplay() {
+  const el = document.getElementById('bb-timer');
+  const remaining = Math.max(0, Math.ceil((timerDeadline - Date.now()) / 1000));
+  if (timerMode === 'spawning') {
+    el.textContent = '🥓 spawns in: ' + remaining + 's';
+    el.style.color = '#cc9966';
+  } else if (timerMode === 'visible') {
+    el.textContent = '🥓 vanishes in: ' + remaining + 's';
+    el.style.color = '#f1c40f';
+  } else {
+    el.textContent = '';
+  }
+}
+
+function scheduleSpawn() {
+  const delay = rndBetween(SPAWN_MIN, SPAWN_MAX) * 1000;
+  timerDeadline = Date.now() + delay;
+  timerMode = 'spawning';
+  clearInterval(timerInterval);
+  timerInterval = setInterval(updateTimerDisplay, 500);
+  spawnTimeout = setTimeout(showIcon, delay);
+}
+
+function showIcon() {
+  clearInterval(timerInterval);
+  iconVisible = true;
+  const icon = document.getElementById('bb-icon');
+  icon.style.display = 'flex';
+  const visibleFor = rndBetween(VISIBLE_MIN, VISIBLE_MAX) * 1000;
+  timerDeadline = Date.now() + visibleFor;
+  timerMode = 'visible';
+  timerInterval = setInterval(updateTimerDisplay, 500);
+  despawnTimeout = setTimeout(hideIcon, visibleFor);
+}
+
+function hideIcon() {
+  clearInterval(timerInterval);
+  clearTimeout(despawnTimeout);
+  iconVisible = false;
+  document.getElementById('bb-icon').style.display = 'none';
+  timerMode = '';
+  updateTimerDisplay();
+  if (!battleOpen) scheduleSpawn();
+}
+
+function onIconClick() {
+  if (battleOpen) return;
+  clearTimeout(despawnTimeout);
+  clearInterval(timerInterval);
+  timerMode = '';
+  updateTimerDisplay();
+  document.getElementById('bb-icon').style.display = 'none';
+  iconVisible = false;
+  openBattle();
+}
+
+scheduleSpawn();
+
+// ── Game state ────────────────────────────────────────────────
+let state = {}, playerTeam = [], turnLock = false, pendingWin = null;
+try { playerTeam = JSON.parse(localStorage.getItem('baconTeam') || '[]'); } catch(e) {}
+
+const rnd   = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+const sleep = ms    => new Promise(r => setTimeout(r, ms));
+
+function rollHit(min, max) {
+  const base = rnd(min, max), r = Math.random();
+  if (r < 0.08) return { dmg: 0,                      tier: 'miss'   };
+  if (r < 0.18) return { dmg: Math.round(base * 0.5), tier: 'weak'   };
+  if (r < 0.75) return { dmg: base,                   tier: 'normal' };
+  if (r < 0.92) return { dmg: Math.round(base * 1.4), tier: 'strong' };
+                return { dmg: Math.round(base * 1.9), tier: 'crit'   };
+}
+
+function openBattle() {
+  battleOpen = true;
+  const enemy = ENEMIES[Math.floor(Math.random() * ENEMIES.length)];
+  const rar   = getRarity(enemy);
+  state = { playerHp:100, playerMaxHp:100, enemyHp:enemy.hp, enemyMaxHp:enemy.hp, enemy };
+  turnLock = false; pendingWin = null;
+  const win = document.getElementById('bb-window');
+  win.style.borderColor = rar.color;
+  win.style.boxShadow = `0 0 40px ${rar.glow}, 0 0 80px ${rar.glow}, inset 0 1px 0 rgba(255,255,255,.05)`;
+  document.getElementById('bb-enemy-wrap').innerHTML = buildFace(enemy, 112);
+  document.getElementById('bb-enemy-name').textContent = enemy.name;
+  document.getElementById('bb-combat-view').style.display = '';
+  document.getElementById('bb-result').classList.remove('show');
+  setButtons(true); updateBars();
+  document.getElementById('bb-log').innerHTML = '';
+  addLog('A wild ' + enemy.name + ' appeared!', 'highlight');
+  addLog(rar.icon + ' ' + rar.label + ' · ' + enemy.flavor, 'rarity-' + enemy.rarity);
+  if (enemy.boss) addLog('⚠️ BOSS — this one hits hard!', 'crit');
+  document.getElementById('bb-overlay').classList.add('active');
+}
+
+function closeBattle() {
+  battleOpen = false;
+  document.getElementById('bb-overlay').classList.remove('active');
+  scheduleSpawn();
+}
+
+function updateBars() {
+  const pp = Math.max(0, state.playerHp / state.playerMaxHp * 100);
+  const ep = Math.max(0, state.enemyHp  / state.enemyMaxHp  * 100);
+  const pb = document.getElementById('bb-player-bar');
+  pb.style.width = pp + '%';
+  pb.style.background = pp > 50 ? '#2ecc71' : pp > 25 ? '#f39c12' : '#e74c3c';
+  document.getElementById('bb-enemy-bar').style.width  = ep + '%';
+  document.getElementById('bb-player-val').textContent = Math.max(0,state.playerHp) + '/' + state.playerMaxHp;
+  document.getElementById('bb-enemy-val').textContent  = Math.max(0,state.enemyHp)  + '/' + state.enemyMaxHp;
+  setFaceExpression('normal');
+}
+
+function setFaceExpression(mode) {
+  const mouth  = document.getElementById('bb-mouth');
+  const browL  = document.getElementById('bb-brow-l');
+  const browR  = document.getElementById('bb-brow-r');
+  const pupilL = document.getElementById('bb-pupil-l');
+  const pupilR = document.getElementById('bb-pupil-r');
+  if (!mouth) return;
+  const cfg = state.enemy, ep = Math.max(0, state.enemyHp / state.enemyMaxHp * 100);
+  if (mode === 'hit') {
+    mouth.setAttribute('d','M36,92 Q54,86 72,92'); mouth.setAttribute('stroke','#e74c3c');
+    if(pupilL) pupilL.setAttribute('r','3'); if(pupilR) pupilR.setAttribute('r','3');
+    if(browL) browL.setAttribute('d','M28,64 Q40,70 50,64');
+    if(browR) browR.setAttribute('d','M58,64 Q68,70 80,64');
+  } else if (mode === 'attack') {
+    mouth.setAttribute('d','M36,88 Q54,95 72,88'); mouth.setAttribute('stroke','#1a0a00');
+    if(pupilL) pupilL.setAttribute('r','6'); if(pupilR) pupilR.setAttribute('r','6');
+    if(browL) browL.setAttribute('d', cfg.angryBrows?'M28,66 Q40,59 50,65':'M30,66 Q40,62 50,65');
+    if(browR) browR.setAttribute('d', cfg.angryBrows?'M58,66 Q68,59 80,65':'M58,66 Q68,62 80,65');
+  } else {
+    let mD,bL,bR,pR;
+    if(ep>66){mD=cfg.mouthPath;bL=cfg.angryBrows?'M28,66 Q40,59 50,65':'M30,66 Q40,62 50,65';bR=cfg.angryBrows?'M58,66 Q68,59 80,65':'M58,66 Q68,62 80,65';pR='5.5';}
+    else if(ep>33){mD='M36,91 Q54,84 72,91';bL='M28,63 Q40,68 50,64';bR='M58,64 Q68,68 80,63';pR='5';}
+    else{mD='M36,93 Q54,84 72,93';bL='M28,62 Q40,69 50,63';bR='M58,63 Q68,69 80,62';pR='4';}
+    mouth.setAttribute('d',mD); mouth.setAttribute('stroke',ep<=33?'#e74c3c':'#1a0a00');
+    if(browL)browL.setAttribute('d',bL); if(browR)browR.setAttribute('d',bR);
+    if(pupilL)pupilL.setAttribute('r',pR); if(pupilR)pupilR.setAttribute('r',pR);
+  }
+}
+
+function addLog(text, cls) {
+  const el = document.createElement('div');
+  el.className = 'bb-log-line' + (cls ? ' '+cls : '');
+  el.textContent = text;
+  const log = document.getElementById('bb-log');
+  log.appendChild(el); log.scrollTop = log.scrollHeight;
+}
+
+function setButtons(on) {
+  document.querySelectorAll('.bb-btn').forEach(b => b.disabled = !on);
+}
+
+function spawnPop(text, tier, x, y) {
+  const cls = tier==='crit'?'crit':tier==='miss'?'miss':tier==='weak'?'weak':'dmg';
+  const el = document.createElement('div');
+  el.className = 'bb-pop ' + cls; el.textContent = text;
+  el.style.left = (x-26)+'px'; el.style.top = (y-38)+'px';
+  document.body.appendChild(el);
+  setTimeout(() => { if(el.parentNode) el.parentNode.removeChild(el); }, 1200);
+}
+
+function centerOf(id) {
+  const r = document.getElementById(id).getBoundingClientRect();
+  return { x: r.left+r.width/2, y: r.top+r.height/2 };
+}
+
+const MOVE_BASE = { spatula:[15,25], pepper:[20,35], pan:[30,45], taunt:[5,15] };
+const MOVE_LINE = {
+  spatula: n=>'You smack '+n+' with your spatula!',
+  pepper:  n=>'PEPPER BLAST at '+n+'! 🌶️',
+  pan:     n=>'PAN SLAM on '+n+'! CLANG! 🥘',
+  taunt:   n=>'You taunt '+n+'. It wobbles furiously.',
+};
+
+async function playerAction(type) {
+  if(turnLock) return; turnLock=true; setButtons(false);
+  if(type==='taunt' && Math.random()<.4) {
+    addLog('You taunt… '+state.enemy.name+' RAGES and attacks first!','bad');
+    await enemyTurn(true); if(state.playerHp<=0) return;
+  }
+  const {dmg,tier} = rollHit(...MOVE_BASE[type]);
+  const eC = centerOf('bb-enemy-wrap');
+  const ps = document.getElementById('bb-player-sprite');
+  ps.classList.add('bb-attack'); setTimeout(()=>ps.classList.remove('bb-attack'),380);
+  if(tier==='miss'){
+    addLog('You swing… but MISS completely! 💨','weak');
+    spawnPop('MISS!','miss',eC.x,eC.y);
+    const wrap=document.getElementById('bb-enemy-wrap');
+    wrap.style.transition='transform .22s'; wrap.style.transform='translateX(24px) rotate(10deg)';
+    setTimeout(()=>{wrap.style.transform='';wrap.style.transition='';},280);
+    await sleep(580); await enemyTurn(false); return;
+  }
+  state.enemyHp -= dmg;
+  addLog(MOVE_LINE[type](state.enemy.name));
+  if(tier==='crit') addLog('💥 CRITICAL HIT! '+dmg+' damage!','crit');
+  else if(tier==='strong') addLog('Heavy blow! '+dmg+' damage!','good');
+  else if(tier==='weak') addLog('Glancing hit… only '+dmg+' damage.','weak');
+  else addLog('Dealt '+dmg+' damage.','good');
+  spawnPop('-'+dmg,tier,eC.x,eC.y);
+  const wrap=document.getElementById('bb-enemy-wrap');
+  setTimeout(()=>{
+    wrap.classList.add('bb-hit'); setFaceExpression('hit');
+    setTimeout(()=>{wrap.classList.remove('bb-hit'); updateBars();},460);
+  },210);
+  updateBars(); await sleep(700);
+  if(state.enemyHp<=0){showWin();return;}
+  await enemyTurn(false);
+}
+
+async function enemyTurn(instant) {
+  if(!instant) await sleep(330);
+  const {dmg,tier} = rollHit(...state.enemy.power);
+  const pC = centerOf('bb-player-sprite');
+  const wrap=document.getElementById('bb-enemy-wrap');
+  wrap.classList.add('bb-attack'); setFaceExpression('attack');
+  setTimeout(()=>{wrap.classList.remove('bb-attack'); updateBars();},400);
+  if(tier==='miss'){
+    addLog(state.enemy.name+' lunges… but misses you! 💨','good');
+    spawnPop('MISS!','miss',pC.x,pC.y); await sleep(480);
+    if(state.playerHp<=0){showLose();return;}
+    turnLock=false; setButtons(true); return;
+  }
+  state.playerHp -= dmg;
+  if(tier==='crit') addLog('💥 '+state.enemy.name+' CRITS you for '+dmg+' damage!','crit');
+  else if(tier==='strong') addLog(state.enemy.name+' slams you hard for '+dmg+' damage!','bad');
+  else if(tier==='weak') addLog(state.enemy.name+' barely grazes you for '+dmg+' damage.','weak');
+  else addLog(state.enemy.name+' sizzles you for '+dmg+' damage!','bad');
+  spawnPop('-'+dmg,tier,pC.x,pC.y);
+  if(tier==='crit'||tier==='strong'){
+    const w=document.getElementById('bb-window');
+    w.classList.add('bb-shake'); setTimeout(()=>w.classList.remove('bb-shake'),400);
+  }
+  const ps=document.getElementById('bb-player-sprite');
+  ps.classList.add('bb-hit'); setTimeout(()=>ps.classList.remove('bb-hit'),380);
+  updateBars(); await sleep(520);
+  if(state.playerHp<=0){showLose();return;}
+  turnLock=false; setButtons(true);
+}
+
+function showWin() {
+  turnLock=false; pendingWin=state.enemy;
+  const rar=getRarity(state.enemy);
+  document.getElementById('bb-combat-view').style.display='none';
+  document.getElementById('bb-result').classList.add('show');
+  document.getElementById('bb-result-emoji').textContent='🏆';
+  document.getElementById('bb-result-title').style.color='#f1c40f';
+  document.getElementById('bb-result-title').textContent='YOU WIN!';
+  document.getElementById('bb-result-sub').innerHTML=
+    `<span class="bb-rarity-badge" style="background:${rar.color}20;border:1px solid ${rar.color};color:${rar.color}">${rar.icon} ${rar.label}</span><br>${state.enemy.name} sizzles in defeat and joins your squad!`;
+}
+
+function showLose() {
+  turnLock=false; pendingWin=null;
+  document.getElementById('bb-combat-view').style.display='none';
+  document.getElementById('bb-result').classList.add('show');
+  document.getElementById('bb-result-emoji').textContent='💀';
+  document.getElementById('bb-result-title').style.color='#e74c3c';
+  document.getElementById('bb-result-title').textContent='YOU LOST!';
+  document.getElementById('bb-result-sub').textContent=state.enemy.name+' defeated you. The sizzle of shame lingers.';
+}
+
+function handleResultBtn() {
+  if(pendingWin){
+    playerTeam.push({name:pendingWin.name, rarity:pendingWin.rarity, level:1});
+    try{localStorage.setItem('baconTeam',JSON.stringify(playerTeam));}catch(e){}
+    pendingWin=null;
+  }
+  closeBattle();
+  renderTeam();
+}
+
+function renderTeam() {
+  const grid = document.getElementById('teamGrid');
+  if(!playerTeam.length){
+    grid.innerHTML='<div class="empty-team">No bacons yet — win battles to recruit them!</div>';
+    return;
+  }
+  grid.innerHTML='';
+  playerTeam.forEach(b => {
+    const cfg  = ENEMIES.find(e=>e.name===b.name)||ENEMIES[0];
+    const rar  = RARITY[b.rarity||cfg.rarity||'common']||RARITY.common;
+    const card = document.createElement('div');
+    card.className='team-card';
+    card.style.borderColor = rar.color;
+    card.style.boxShadow = '0 0 8px '+rar.color+'40';
+    card.innerHTML=`<div style="flex-shrink:0;line-height:0">${buildFace(cfg,46)}</div>
+      <div>
+        <div class="card-name">${b.name}</div>
+        <div class="card-rarity" style="color:${rar.color}">${rar.icon} ${rar.label}</div>
+        <div class="card-lv">Lv.${b.level} · Rookie Rasher</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+renderTeam();
+</script>
+</body>
+</html>
