@@ -370,14 +370,16 @@ ENEMIES.forEach(e=>{
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
   // ✏️ PASTE YOUR FIREBASE CONFIG HERE
-  const firebaseConfig = {
-    apiKey:            "YOUR_API_KEY",
-    authDomain:        "YOUR_AUTH_DOMAIN",
-    projectId:         "YOUR_PROJECT_ID",
-    storageBucket:     "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId:             "YOUR_APP_ID"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyB3L4g-DWF5OY8jrrcjAZqwmts_RwKXQOo",
+  authDomain: "bacon-brawlers.firebaseapp.com",
+  projectId: "bacon-brawlers",
+  storageBucket: "bacon-brawlers.firebasestorage.app",
+  messagingSenderId: "139615433756",
+  appId: "1:139615433756:web:735b4a4bfae5a16a9bdbd9",
+  measurementId: "G-TNWHS6ZTTN"
+};
+
 
   const app      = initializeApp(firebaseConfig);
   const auth     = getAuth(app);
