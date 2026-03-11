@@ -3,38 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🥓 Bacon Brawlers v2 — Squad Preview</title>
+<title>🥓 Bacon Brawlers — Preview</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥓</text></svg>">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap">
 <style>
 :root {
   --bacon-red:#c0392b; --bacon-brown:#7B3F00; --gold:#f1c40f;
   --bg:#1a0a00; --panel:#2d1200; --panel2:#3d1a00; --text:#ffeedd;
-  --hp-green:#2ecc71; --hp-yellow:#f39c12; --hp-red:#e74c3c;
+  --grease:#f39c12;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{
-  font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text);
-  min-height:100vh; display:flex; flex-direction:column; align-items:center;
-  justify-content:flex-start; padding:24px 0 60px;
-  overflow-x:hidden; overflow-y:auto; position:relative;
-}
-body::before{
-  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
-  background:
-    radial-gradient(ellipse at 20% 30%,rgba(192,57,43,.18) 0%,transparent 60%),
-    radial-gradient(ellipse at 80% 70%,rgba(243,156,18,.12) 0%,transparent 60%);
-}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 0 60px;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 20% 30%,rgba(192,57,43,.18) 0%,transparent 60%),radial-gradient(ellipse at 80% 70%,rgba(243,156,18,.12) 0%,transparent 60%);}
 .bg-bits{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
 .bit{position:absolute;opacity:.07;animation:floatBit linear infinite;}
 @keyframes floatBit{from{transform:translateY(110vh) rotate(0deg);}to{transform:translateY(-10vh) rotate(360deg);}}
 
 /* ── Fake browser ── */
-#fake-page{
-  position:relative; width:900px; max-width:98vw; min-height:380px;
-  background:#f0ede8; border-radius:12px; z-index:1; display:flex; flex-direction:column;
-  box-shadow:0 0 80px rgba(192,57,43,.5),0 0 0 2px var(--bacon-brown); overflow:hidden;
-}
+#fake-page{position:relative;width:900px;max-width:98vw;min-height:380px;background:#f0ede8;border-radius:12px;z-index:1;display:flex;flex-direction:column;box-shadow:0 0 80px rgba(192,57,43,.5),0 0 0 2px var(--bacon-brown);overflow:hidden;}
 .browser-bar{background:#2c2c2c;padding:8px 14px;display:flex;align-items:center;gap:8px;}
 .browser-dots span{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;}
 .browser-dots .r{background:#ff5f57;}.browser-dots .y{background:#febc2e;}.browser-dots .g{background:#28c840;}
@@ -45,103 +31,111 @@ body::before{
 .page-content .tag{display:inline-block;background:#e74c3c;color:white;padding:2px 8px;border-radius:4px;font-size:.7rem;margin-bottom:10px;}
 
 /* ── Bacon icon ── */
-#bb-icon{
-  position:absolute; bottom:22px; right:22px; width:64px; height:64px;
-  border-radius:50%; background:radial-gradient(circle at 35% 35%,#f39c12,#c0392b);
-  border:3px solid #f1c40f; cursor:pointer; display:none; align-items:center; justify-content:center;
-  z-index:10; animation:iconPulse 2s ease-in-out infinite; transition:transform .15s; user-select:none;
-}
+#bb-icon{position:absolute;bottom:22px;right:22px;width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f39c12,#c0392b);border:3px solid #f1c40f;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:10;animation:iconPulse 2s ease-in-out infinite;transition:transform .15s;user-select:none;}
 #bb-icon:hover{transform:scale(1.12);}
-.bb-notif{
-  position:absolute;top:-4px;right:-4px;width:20px;height:20px;
-  background:#f1c40f;border-radius:50%;font-size:.65rem;color:#222;font-weight:900;
-  display:flex;align-items:center;justify-content:center;border:2px solid #fff;
-  animation:ping 1.5s ease-in-out infinite;
-}
-@keyframes iconPulse{
-  0%,100%{box-shadow:0 4px 20px rgba(192,57,43,.7),0 0 0 0 rgba(243,156,18,.4);}
-  50%{box-shadow:0 4px 30px rgba(192,57,43,.9),0 0 0 12px rgba(243,156,18,0);}
-}
+.bb-notif{position:absolute;top:-4px;right:-4px;width:20px;height:20px;background:#f1c40f;border-radius:50%;font-size:.65rem;color:#222;font-weight:900;display:flex;align-items:center;justify-content:center;border:2px solid #fff;animation:ping 1.5s ease-in-out infinite;}
+@keyframes iconPulse{0%,100%{box-shadow:0 4px 20px rgba(192,57,43,.7),0 0 0 0 rgba(243,156,18,.4);}50%{box-shadow:0 4px 30px rgba(192,57,43,.9),0 0 0 12px rgba(243,156,18,0);}}
 @keyframes ping{0%,100%{transform:scale(1);}50%{transform:scale(1.2);}}
 
 /* ── Timer ── */
-#bb-timer{
-  position:fixed; bottom:96px; right:24px; z-index:2147483646;
-  background:rgba(0,0,0,.75); color:#f1c40f; font-size:11px;
-  font-family:monospace; padding:4px 8px; border-radius:6px;
-  border:1px solid #7B3F00; pointer-events:none; line-height:1.4;
-}
+#bb-timer{position:fixed;bottom:96px;right:24px;z-index:50;background:rgba(0,0,0,.75);color:#f1c40f;font-size:11px;font-family:monospace;padding:4px 8px;border-radius:6px;border:1px solid #7B3F00;pointer-events:none;line-height:1.4;}
 
-/* ── SQUAD PICKER OVERLAY ── */
-#bb-squad-overlay{
-  position:fixed; inset:0; background:rgba(10,0,0,.93);
-  display:flex; align-items:center; justify-content:center;
-  z-index:99; opacity:0; pointer-events:none; transition:opacity .3s;
-}
+/* ── Bottom panels ── */
+#bottom-panels{margin-top:14px;width:900px;max-width:98vw;display:grid;grid-template-columns:1fr 1fr;gap:12px;z-index:1;}
+#team-panel{background:var(--panel);border:2px solid var(--bacon-brown);border-radius:12px;padding:14px 16px;}
+.panel-title{font-family:'Bangers',cursive;font-size:1.05rem;letter-spacing:2px;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.team-grid{display:flex;flex-direction:column;gap:7px;max-height:280px;overflow-y:auto;}
+.team-card{background:var(--panel2);border:2px solid var(--bacon-brown);border-radius:10px;padding:7px 10px;display:flex;align-items:center;gap:8px;animation:slideIn .4s cubic-bezier(.34,1.56,.64,1);}
+.card-name{font-family:'Bangers',cursive;font-size:.88rem;letter-spacing:1px;color:var(--gold);line-height:1.2;}
+.card-rarity{font-size:.58rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;margin-top:1px;}
+.card-lv{font-size:.62rem;color:#888;}
+.empty-team{font-size:.8rem;color:#555;font-style:italic;text-align:center;padding:20px 0;}
+@keyframes slideIn{from{transform:scale(.6);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+/* ── Grease Points panel ── */
+#grease-panel{background:var(--panel);border:2px solid var(--bacon-brown);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;}
+.gp-display{background:linear-gradient(135deg,#3d1a00,#5a2800);border:2px solid var(--grease);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.gp-icon{font-size:2rem;line-height:1;}
+.gp-amount{font-family:'Bangers',cursive;font-size:2.4rem;color:var(--grease);line-height:1;letter-spacing:1px;}
+.gp-label{font-size:.68rem;color:#cc9966;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.gp-earn-table{display:flex;flex-direction:column;gap:3px;}
+.gp-earn-row{display:flex;justify-content:space-between;align-items:center;font-size:.7rem;padding:3px 6px;border-radius:5px;background:rgba(255,255,255,.03);}
+.gp-earn-row span:first-child{color:#999;}
+.gp-earn-row span:last-child{font-weight:900;color:var(--grease);}
+.combine-btn{background:linear-gradient(135deg,#5a2800,#8B4500);border:2px solid var(--grease);border-radius:10px;padding:10px 14px;color:var(--grease);font-family:'Bangers',cursive;font-size:1.15rem;letter-spacing:2px;cursor:pointer;transition:all .18s;text-align:center;box-shadow:0 3px 12px rgba(243,156,18,.3);}
+.combine-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(243,156,18,.5);border-color:#ffd700;}
+.combine-btn:disabled{opacity:.35;cursor:default;}
+
+/* ── Squad picker ── */
+#bb-squad-overlay{position:fixed;inset:0;background:rgba(10,0,0,.93);display:flex;align-items:center;justify-content:center;z-index:99;opacity:0;pointer-events:none;transition:opacity .3s;}
 #bb-squad-overlay.active{opacity:1;pointer-events:all;}
-#bb-squad-window{
-  width:560px; max-width:96vw; background:var(--panel); border:3px solid var(--bacon-brown);
-  border-radius:16px; overflow:hidden; padding-bottom:20px;
-  box-shadow:0 0 60px rgba(192,57,43,.6);
-  transform:scale(.85) translateY(30px); transition:transform .35s cubic-bezier(.34,1.56,.64,1);
-}
+#bb-squad-window{width:560px;max-width:96vw;background:var(--panel);border:3px solid var(--bacon-brown);border-radius:16px;overflow:hidden;padding-bottom:20px;box-shadow:0 0 60px rgba(192,57,43,.6);transform:scale(.85) translateY(30px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
 #bb-squad-overlay.active #bb-squad-window{transform:scale(1) translateY(0);}
-.sq-header{
-  background:linear-gradient(135deg,var(--bacon-red),#8B0000); padding:12px 20px;
-  display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(--bacon-brown);
-}
+.sq-header{background:linear-gradient(135deg,var(--bacon-red),#8B0000);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--bacon-brown);}
 .sq-title{font-family:'Bangers',cursive;font-size:1.5rem;letter-spacing:2px;color:var(--gold);text-shadow:2px 2px 0 #000;}
 .sq-sub{font-size:.75rem;color:#cc9966;padding:10px 20px 6px;text-align:center;}
 .sq-grid{display:flex;flex-wrap:wrap;gap:10px;padding:4px 16px 12px;justify-content:center;max-height:340px;overflow-y:auto;}
-.sq-card{
-  background:var(--panel2); border:2px solid var(--bacon-brown); border-radius:12px;
-  padding:10px 8px; width:110px; display:flex; flex-direction:column; align-items:center; gap:4px;
-  cursor:pointer; transition:all .18s; text-align:center;
-}
+.sq-card{background:var(--panel2);border:2px solid var(--bacon-brown);border-radius:12px;padding:10px 8px;width:110px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .18s;text-align:center;}
 .sq-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 6px 18px rgba(192,57,43,.4);}
 .sq-card.sq-selected{border-color:var(--gold);background:#5a2800;box-shadow:0 0 16px rgba(241,196,15,.4);}
 .sq-card-name{font-family:'Bangers',cursive;font-size:.8rem;letter-spacing:.5px;color:var(--gold);line-height:1.2;}
 .sq-card-rarity{font-size:.55rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
 .sq-card-lv{font-size:.6rem;color:#888;}
 .sq-empty{text-align:center;color:#664433;font-style:italic;font-size:.82rem;padding:20px;width:100%;}
-.sq-fight-btn{
-  display:block; margin:0 auto; background:linear-gradient(135deg,var(--bacon-red),#8B0000);
-  border:3px solid var(--gold); border-radius:12px; padding:12px 40px;
-  color:var(--gold); font-family:'Bangers',cursive; font-size:1.4rem; letter-spacing:2px;
-  cursor:pointer; transition:transform .15s,box-shadow .15s;
-  box-shadow:0 4px 20px rgba(192,57,43,.5); opacity:.4; pointer-events:none;
-}
+.sq-fight-btn{display:block;margin:0 auto;background:linear-gradient(135deg,var(--bacon-red),#8B0000);border:3px solid var(--gold);border-radius:12px;padding:12px 40px;color:var(--gold);font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px;cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 20px rgba(192,57,43,.5);opacity:.4;pointer-events:none;}
 .sq-fight-btn.ready{opacity:1;pointer-events:all;}
 .sq-fight-btn.ready:hover{transform:scale(1.05);box-shadow:0 8px 28px rgba(192,57,43,.7);}
 
+/* ── COMBINE OVERLAY ── */
+#combine-overlay{position:fixed;inset:0;background:rgba(10,0,0,.95);display:flex;align-items:center;justify-content:center;z-index:101;opacity:0;pointer-events:none;transition:opacity .3s;}
+#combine-overlay.active{opacity:1;pointer-events:all;}
+#combine-window{width:620px;max-width:96vw;background:var(--panel);border:3px solid var(--grease);border-radius:16px;overflow:hidden;box-shadow:0 0 60px rgba(243,156,18,.4);transform:scale(.85) translateY(30px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);position:relative;}
+#combine-overlay.active #combine-window{transform:scale(1) translateY(0);}
+.comb-header{background:linear-gradient(135deg,#5a2800,#3d1a00);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--grease);}
+.comb-title{font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:2px;color:var(--grease);text-shadow:2px 2px 0 #000;}
+.comb-body{padding:16px 20px;display:flex;flex-direction:column;gap:14px;}
+.comb-subtitle{font-size:.8rem;color:#cc9966;text-align:center;line-height:1.6;}
+.comb-slots{display:flex;align-items:center;justify-content:center;gap:12px;}
+.comb-slot{width:128px;height:168px;background:var(--panel2);border:2px dashed #7B3F00;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:all .2s;text-align:center;padding:8px;font-size:.75rem;color:#664433;}
+.comb-slot.filled{border-style:solid;border-color:var(--grease);background:#3d1a00;}
+.comb-slot:hover:not(.filled){border-color:#cc9966;color:#cc9966;}
+.comb-slot-name{font-family:'Bangers',cursive;font-size:.82rem;color:var(--gold);line-height:1.2;}
+.comb-slot-rarity{font-size:.55rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+.comb-arrow{font-size:1.8rem;color:var(--grease);flex-shrink:0;}
+.comb-result-box{width:128px;min-height:168px;background:rgba(0,0,0,.3);border:1px solid #5a2800;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px;text-align:center;}
+.comb-result-label{font-size:.62rem;color:#888;text-transform:uppercase;letter-spacing:1px;}
+.comb-result-name{font-family:'Bangers',cursive;font-size:.85rem;color:var(--gold);line-height:1.2;}
+.comb-result-desc{font-size:.6rem;color:#cc9966;line-height:1.4;}
+.comb-cost-row{display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,.3);border-radius:8px;padding:8px 14px;}
+.comb-cost-label{font-size:.75rem;color:#cc9966;}
+.comb-cost-val{font-family:'Bangers',cursive;font-size:1.1rem;color:var(--grease);}
+.comb-cost-val.cant-afford{color:#e74c3c;}
+.comb-do-btn{background:linear-gradient(135deg,#5a2800,#8B4500);border:3px solid var(--grease);border-radius:12px;padding:12px;color:var(--grease);font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px;cursor:pointer;transition:all .18s;width:100%;box-shadow:0 4px 16px rgba(243,156,18,.3);}
+.comb-do-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(243,156,18,.5);}
+.comb-do-btn:disabled{opacity:.35;cursor:default;}
+
+/* Bacon picker sub-panel */
+.comb-pick-overlay{position:absolute;inset:0;background:rgba(10,0,0,.97);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px;z-index:10;border-radius:14px;}
+.comb-pick-title{font-family:'Bangers',cursive;font-size:1.3rem;color:var(--gold);letter-spacing:2px;margin-bottom:12px;}
+.comb-pick-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-height:340px;overflow-y:auto;}
+.comb-pick-card{background:var(--panel2);border:2px solid var(--bacon-brown);border-radius:10px;padding:8px 6px;width:96px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:all .15s;text-align:center;}
+.comb-pick-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+.comb-pick-card.dimmed{opacity:.3;pointer-events:none;}
+.comb-pick-name{font-family:'Bangers',cursive;font-size:.72rem;color:var(--gold);line-height:1.2;}
+.comb-pick-rarity{font-size:.5rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+.comb-pick-cancel{margin-top:12px;background:none;border:1px solid #664433;color:#cc9966;border-radius:8px;padding:6px 20px;cursor:pointer;font-size:.8rem;}
+.comb-pick-cancel:hover{border-color:#cc9966;color:#ffeedd;}
+
 /* ── Battle overlay ── */
-#bb-overlay{
-  position:fixed; inset:0; background:rgba(10,0,0,.88);
-  display:flex; align-items:center; justify-content:center;
-  z-index:100; opacity:0; pointer-events:none; transition:opacity .3s;
-}
+#bb-overlay{position:fixed;inset:0;background:rgba(10,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .3s;}
 #bb-overlay.active{opacity:1;pointer-events:all;}
-#bb-window{
-  width:540px; max-width:96vw; background:var(--panel); border:3px solid var(--bacon-brown);
-  border-radius:16px; overflow:hidden;
-  box-shadow:0 0 60px rgba(192,57,43,.6),inset 0 1px 0 rgba(255,255,255,.05);
-  transform:scale(.8) translateY(40px); transition:transform .35s cubic-bezier(.34,1.56,.64,1);
-}
+#bb-window{width:540px;max-width:96vw;background:var(--panel);border:3px solid var(--bacon-brown);border-radius:16px;overflow:hidden;box-shadow:0 0 60px rgba(192,57,43,.6),inset 0 1px 0 rgba(255,255,255,.05);transform:scale(.8) translateY(40px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
 #bb-overlay.active #bb-window{transform:scale(1) translateY(0);}
-.bb-header{
-  background:linear-gradient(135deg,var(--bacon-red),#8B0000); padding:12px 20px;
-  display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid var(--bacon-brown);
-}
+.bb-header{background:linear-gradient(135deg,var(--bacon-red),#8B0000);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--bacon-brown);}
 .bb-title{font-family:'Bangers',cursive;font-size:1.6rem;letter-spacing:2px;color:var(--gold);text-shadow:2px 2px 0 #000;}
 .bb-close{background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;opacity:.7;transition:opacity .2s;line-height:1;padding:0;}
 .bb-close:hover{opacity:1;}
-
-/* ── Arena ── */
-.bb-arena{
-  background:linear-gradient(180deg,#0d0500 0%,#1c0800 60%,#2a1000 100%);
-  padding:20px 24px 14px; display:flex; align-items:flex-end;
-  justify-content:space-between; gap:10px; min-height:210px; position:relative; overflow:hidden;
-}
+.bb-arena{background:linear-gradient(180deg,#0d0500 0%,#1c0800 60%,#2a1000 100%);padding:20px 24px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;min-height:210px;position:relative;overflow:hidden;}
 .bb-arena::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(180deg,transparent,rgba(120,40,0,.4));}
 .bb-fighter{display:flex;flex-direction:column;align-items:center;gap:6px;z-index:1;}
 .bb-fighter-label{font-size:.7rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:#888;}
@@ -151,29 +145,16 @@ body::before{
 #bb-player-wrap.bb-hit{animation:pHit .42s ease !important;}
 @keyframes playerFloat{0%,100%{transform:scaleX(-1) translateY(0) rotate(2deg);}50%{transform:scaleX(-1) translateY(-11px) rotate(-2deg);}}
 @keyframes pAttack{0%{transform:scaleX(-1) translateX(0);}45%{transform:scaleX(-1) translateX(-28px) scale(1.15);}100%{transform:scaleX(-1) translateX(0) scale(1);}}
-@keyframes pHit{
-  0%{transform:scaleX(-1) translateX(0);}
-  20%{transform:scaleX(-1) translateX(11px) rotate(-7deg);filter:drop-shadow(0 0 16px #f00) brightness(2);}
-  55%{transform:scaleX(-1) translateX(-9px) rotate(5deg);filter:drop-shadow(0 0 10px #f40) brightness(1.6);}
-  100%{transform:scaleX(-1) translateX(0) rotate(0);}
-}
+@keyframes pHit{0%{transform:scaleX(-1) translateX(0);}20%{transform:scaleX(-1) translateX(11px) rotate(-7deg);filter:drop-shadow(0 0 16px #f00) brightness(2);}55%{transform:scaleX(-1) translateX(-9px) rotate(5deg);filter:drop-shadow(0 0 10px #f40) brightness(1.6);}100%{transform:scaleX(-1) translateX(0) rotate(0);}}
 #bb-enemy-wrap{filter:drop-shadow(0 6px 16px rgba(0,0,0,.9));animation:enemyFloat 2.8s ease-in-out infinite;display:block;line-height:0;}
 #bb-enemy-wrap.bb-attack{animation:eAttack .35s ease !important;}
 #bb-enemy-wrap.bb-hit{animation:eHit .42s ease !important;}
 @keyframes enemyFloat{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-11px) rotate(2deg);}}
 @keyframes eAttack{0%{transform:translateX(0);}45%{transform:translateX(-28px) scale(1.15);}100%{transform:translateX(0) scale(1);}}
-@keyframes eHit{
-  0%{transform:translateX(0);}
-  20%{transform:translateX(11px) rotate(7deg);filter:drop-shadow(0 0 16px #f00) brightness(2);}
-  55%{transform:translateX(-9px) rotate(-5deg);filter:drop-shadow(0 0 10px #f40) brightness(1.6);}
-  80%{transform:translateX(5px) rotate(2deg);}
-  100%{transform:translateX(0) rotate(0);}
-}
-.bb-blink-l{animation:bbBlink 4s ease-in-out infinite;}
-.bb-blink-r{animation:bbBlink 4s ease-in-out infinite;animation-delay:.2s;}
+@keyframes eHit{0%{transform:translateX(0);}20%{transform:translateX(11px) rotate(7deg);filter:drop-shadow(0 0 16px #f00) brightness(2);}55%{transform:translateX(-9px) rotate(-5deg);filter:drop-shadow(0 0 10px #f40) brightness(1.6);}80%{transform:translateX(5px) rotate(2deg);}100%{transform:translateX(0) rotate(0);}}
+.bb-blink-l{animation:bbBlink 4s ease-in-out infinite;}.bb-blink-r{animation:bbBlink 4s ease-in-out infinite;animation-delay:.2s;}
 .bb-blink-l.bb-angry,.bb-blink-r.bb-angry{animation-name:bbBlinkFast;}
-@keyframes bbBlink{0%,43%,49%,100%{r:5.5px;}46%{r:9.5px;}}
-@keyframes bbBlinkFast{0%,35%,41%,100%{r:5.5px;}38%{r:9.5px;}}
+@keyframes bbBlink{0%,43%,49%,100%{r:5.5px;}46%{r:9.5px;}}@keyframes bbBlinkFast{0%,35%,41%,100%{r:5.5px;}38%{r:9.5px;}}
 .bb-steam{animation:bbSteam 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom center;}
 .bb-steam.s2{animation-delay:.8s;}.bb-steam.s3{animation-delay:1.6s;}
 @keyframes bbSteam{0%{opacity:0;transform:translateY(0);}30%{opacity:.55;transform:translateY(-7px);}100%{opacity:0;transform:translateY(-24px);}}
@@ -182,78 +163,55 @@ body::before{
 .bb-boss-ring{animation:bossGlow 1.6s ease-in-out infinite;}
 @keyframes bossGlow{0%,100%{opacity:.25;}50%{opacity:.65;}}
 .bb-vs{font-family:'Bangers',cursive;font-size:2rem;color:var(--gold);text-shadow:2px 2px 0 #000,0 0 20px rgba(243,156,18,.5);flex-shrink:0;align-self:center;}
-
-/* ── HP bars ── */
 .bb-hp-section{padding:10px 24px;background:rgba(0,0,0,.3);}
 .bb-hp-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
 .bb-hp-label{font-size:.7rem;font-weight:900;color:#999;width:36px;text-align:right;flex-shrink:0;}
 .bb-hp-bar-wrap{flex:1;height:14px;background:#111;border-radius:7px;overflow:hidden;border:1px solid #333;}
 .bb-hp-bar{height:100%;border-radius:7px;transition:width .5s cubic-bezier(.4,0,.2,1),background .5s;}
 .bb-hp-val{font-size:.7rem;font-weight:900;width:52px;text-align:left;color:#ccc;flex-shrink:0;}
-
-/* ── Log ── */
 .bb-log{background:rgba(0,0,0,.4);margin:0 24px 10px;border-radius:8px;padding:8px 12px;min-height:50px;max-height:66px;overflow-y:auto;border:1px solid #3a1a00;}
 .bb-log-line{font-size:.78rem;color:#ddc;line-height:1.55;animation:fadeIn .2s ease;}
-.bb-log-line.highlight{color:var(--gold);font-weight:700;}
-.bb-log-line.bad{color:#e74c3c;}.bb-log-line.good{color:#2ecc71;}
-.bb-log-line.crit{color:#ff6a00;font-weight:900;font-size:.84rem;}
-.bb-log-line.weak{color:#999;font-style:italic;}
-.bb-log-line.rarity-common{color:#aaaaaa;}
-.bb-log-line.rarity-uncommon{color:#2ecc71;}
-.bb-log-line.rarity-rare{color:#3498db;}
-.bb-log-line.rarity-epic{color:#9b59b6;}
-.bb-log-line.rarity-legendary{color:#f1c40f;font-weight:700;}
+.bb-log-line.highlight{color:var(--gold);font-weight:700;}.bb-log-line.bad{color:#e74c3c;}.bb-log-line.good{color:#2ecc71;}
+.bb-log-line.crit{color:#ff6a00;font-weight:900;font-size:.84rem;}.bb-log-line.weak{color:#999;font-style:italic;}
+.bb-log-line.grease{color:var(--grease);font-weight:700;}
+.bb-log-line.rarity-common{color:#aaaaaa;}.bb-log-line.rarity-uncommon{color:#2ecc71;}.bb-log-line.rarity-rare{color:#3498db;}.bb-log-line.rarity-epic{color:#9b59b6;}.bb-log-line.rarity-legendary{color:#f1c40f;font-weight:700;}
 .bb-rarity-badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
-
-/* ── Actions ── */
 .bb-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 24px 18px;}
 .bb-btn{background:var(--panel2);border:2px solid var(--bacon-brown);border-radius:10px;padding:10px 8px;cursor:pointer;color:var(--text);font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:700;text-align:left;transition:all .15s;display:flex;flex-direction:column;gap:2px;}
 .bb-btn:hover:not(:disabled){background:#5a2500;border-color:var(--gold);transform:translateY(-1px);box-shadow:0 4px 12px rgba(192,57,43,.4);}
 .bb-btn:disabled{opacity:.4;cursor:default;}
-.bb-btn-icon{font-size:1.2rem;margin-bottom:2px;}
-.bb-btn-name{font-size:.85rem;}.bb-btn-desc{font-size:.68rem;color:#aaa;}
-
-/* ── Result ── */
-.bb-result{display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;text-align:center;gap:14px;}
+.bb-btn-icon{font-size:1.2rem;margin-bottom:2px;}.bb-btn-name{font-size:.85rem;}.bb-btn-desc{font-size:.68rem;color:#aaa;}
+.bb-result{display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;text-align:center;gap:12px;}
 .bb-result.show{display:flex;}
 .bb-result-emoji{font-size:4rem;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
 .bb-result-title{font-family:'Bangers',cursive;font-size:2.2rem;letter-spacing:3px;text-shadow:2px 2px 0 #000;}
-.bb-result-sub{font-size:.9rem;color:#bbb;max-width:320px;}
+.bb-result-sub{font-size:.9rem;color:#bbb;max-width:320px;line-height:1.6;}
+.bb-result-gp{font-family:'Bangers',cursive;font-size:1.5rem;color:var(--grease);letter-spacing:1px;animation:popIn .5s .2s cubic-bezier(.34,1.56,.64,1) both;}
 .bb-result-btn{background:linear-gradient(135deg,var(--bacon-red),var(--bacon-brown));border:2px solid var(--gold);border-radius:10px;padding:10px 28px;color:var(--gold);font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:2px;cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 14px rgba(0,0,0,.5);}
 .bb-result-btn:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(192,57,43,.6);}
 @keyframes popIn{from{transform:scale(0) rotate(-20deg);}to{transform:scale(1) rotate(0deg);}}
-
-/* ── Team panel ── */
-#team-panel{margin-top:16px;width:900px;max-width:98vw;background:var(--panel);border:2px solid var(--bacon-brown);border-radius:12px;padding:14px 20px;z-index:1;}
-.team-title{font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--gold);margin-bottom:10px;}
-.team-grid{display:flex;flex-wrap:wrap;gap:10px;}
-.team-card{background:var(--panel2);border:2px solid var(--bacon-brown);border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:10px;animation:slideIn .4s cubic-bezier(.34,1.56,.64,1);}
-.card-name{font-family:'Bangers',cursive;font-size:.95rem;letter-spacing:1px;color:var(--gold);}
-.card-rarity{font-size:.62rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
-.card-lv{font-size:.68rem;color:#aaa;}
-.empty-team{font-size:.8rem;color:#555;font-style:italic;}
-@keyframes slideIn{from{transform:scale(.6);opacity:0;}to{transform:scale(1);opacity:1;}}
-
-/* ── Damage pops ── */
 .bb-pop{position:fixed;font-family:'Bangers',cursive;pointer-events:none;z-index:999;text-shadow:2px 2px 0 #000;}
 .bb-pop.dmg{font-size:1.7rem;color:#ffd700;animation:popDmg .9s ease-out forwards;}
 .bb-pop.crit{font-size:2.5rem;color:#ff4400;animation:popCrit 1.1s ease-out forwards;}
 .bb-pop.weak{font-size:1.4rem;color:#aaa;animation:popWeak .85s ease-out forwards;}
 .bb-pop.miss{font-size:1.8rem;color:#ddd;animation:popMiss .85s ease-out forwards;}
+.bb-pop.gp{font-size:1.6rem;color:var(--grease);animation:popGp 1.6s ease-out forwards;}
 @keyframes popDmg{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-65px) scale(1.4);}}
 @keyframes popCrit{0%{opacity:1;transform:translateY(0) scale(1.3) rotate(-4deg);}60%{transform:translateY(-42px) scale(2) rotate(4deg);}100%{opacity:0;transform:translateY(-80px) scale(2.3);}}
-@keyframes popWeak{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-44px) scale(.8);}}
-@keyframes popMiss{0%{opacity:1;transform:translateY(0) rotate(-6deg);}100%{opacity:0;transform:translateY(-50px) rotate(12deg) scale(1.3);}}
+@keyframes popWeak{0%{opacity:1;}100%{opacity:0;transform:translateY(-44px) scale(.8);}}
+@keyframes popMiss{0%{opacity:1;transform:rotate(-6deg);}100%{opacity:0;transform:translateY(-50px) rotate(12deg) scale(1.3);}}
+@keyframes popGp{0%{opacity:0;transform:translateY(0) scale(.8);}15%{opacity:1;transform:translateY(-10px) scale(1.2);}100%{opacity:0;transform:translateY(-90px) scale(1.4);}}
 @keyframes screenShake{0%,100%{transform:none;}20%{transform:translate(-5px,2px);}40%{transform:translate(5px,-3px);}60%{transform:translate(-3px,4px);}80%{transform:translate(4px,-2px);}}
 .bb-shake{animation:screenShake .38s ease;}
+@keyframes combineFlash{0%{opacity:0;transform:scale(.4);}40%{opacity:1;transform:scale(1.18);}70%{transform:scale(.94);}100%{opacity:1;transform:scale(1);}}
+.combine-flash{animation:combineFlash .7s cubic-bezier(.34,1.56,.64,1);}
 </style>
 </head>
 <body>
 
 <div class="bg-bits" id="bgBits"></div>
 
-<!-- Fake browser page -->
 <div id="fake-page">
   <div class="browser-bar">
     <div class="browser-dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
@@ -263,8 +221,7 @@ body::before{
     <span class="tag">BREAKING NEWS</span>
     <h1>Scientists Baffled: Bacon Strips Gaining Sentience, Declaring War on Humanity</h1>
     <p>In what experts are calling the most delicious crisis of our generation, strips of cooked bacon across the globe have reportedly begun moving on their own, forming primitive battle stances and challenging unsuspecting web browsers to combat.</p>
-    <p>"I thought it was just the grease cooling down," said one witness. "But then it winked at me. Bacon doesn't wink. It just... doesn't." Local authorities advise citizens to remain calm and under no circumstances challenge a bacon strip to an arm-wrestling contest.</p>
-    <p>More at 11. Please also eat a salad.</p>
+    <p>"I thought it was just the grease cooling down," said one witness. "But then it winked at me. Bacon doesn't wink. It just... doesn't."</p>
   </div>
   <div id="bb-icon" onclick="onIconClick()">
     <svg width="38" height="38" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -283,9 +240,33 @@ body::before{
 
 <div id="bb-timer"></div>
 
-<div id="team-panel">
-  <div class="team-title">🥓 YOUR BACON SQUAD</div>
-  <div class="team-grid" id="teamGrid"><div class="empty-team">No bacons yet — win battles to recruit them!</div></div>
+<div id="bottom-panels">
+  <div id="team-panel">
+    <div class="panel-title">🥓 YOUR BACON SQUAD</div>
+    <div class="team-grid" id="teamGrid">
+      <div class="empty-team">No bacons yet — win battles to recruit them!</div>
+    </div>
+  </div>
+
+  <div id="grease-panel">
+    <div class="panel-title">🫙 GREASE POINTS</div>
+    <div class="gp-display">
+      <div class="gp-icon">🫙</div>
+      <div>
+        <div class="gp-amount" id="gp-display">0</div>
+        <div class="gp-label">Grease Points</div>
+      </div>
+    </div>
+    <div class="gp-earn-table">
+      <div style="font-size:.65rem;color:#664433;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">Earned per win:</div>
+      <div class="gp-earn-row"><span>⚪ Common</span><span>+10 GP</span></div>
+      <div class="gp-earn-row"><span>🟢 Uncommon</span><span>+20 GP</span></div>
+      <div class="gp-earn-row"><span>🔵 Rare</span><span>+35 GP</span></div>
+      <div class="gp-earn-row"><span>🟣 Epic</span><span>+60 GP</span></div>
+      <div class="gp-earn-row"><span>🌟 Legendary</span><span>+100 GP</span></div>
+    </div>
+    <button class="combine-btn" id="open-combine-btn" onclick="openCombine()" disabled>🔥 COMBINE BACONS</button>
+  </div>
 </div>
 
 <!-- Squad picker -->
@@ -311,7 +292,7 @@ body::before{
     <div id="bb-combat-view">
       <div class="bb-arena">
         <div class="bb-fighter">
-          <div class="bb-fighter-label">YOU</div>
+          <div class="bb-fighter-label" id="bb-player-label">YOU</div>
           <div id="bb-player-wrap"></div>
           <div class="bb-fighter-name" id="bb-player-name">???</div>
         </div>
@@ -324,7 +305,7 @@ body::before{
       </div>
       <div class="bb-hp-section">
         <div class="bb-hp-row">
-          <div class="bb-hp-label" id="bb-player-label">YOU</div>
+          <div class="bb-hp-label" id="bb-player-hp-label">YOU</div>
           <div class="bb-hp-bar-wrap"><div class="bb-hp-bar" id="bb-player-bar" style="width:100%;background:#2ecc71"></div></div>
           <div class="bb-hp-val" id="bb-player-val">100/100</div>
         </div>
@@ -346,170 +327,123 @@ body::before{
       <div class="bb-result-emoji" id="bb-result-emoji">🏆</div>
       <div class="bb-result-title" id="bb-result-title">YOU WIN!</div>
       <div class="bb-result-sub" id="bb-result-sub"></div>
+      <div class="bb-result-gp" id="bb-result-gp"></div>
       <button class="bb-result-btn" onclick="handleResultBtn()">DONE</button>
     </div>
   </div>
 </div>
 
+<!-- Combine overlay -->
+<div id="combine-overlay">
+  <div id="combine-window">
+    <div class="comb-header">
+      <div class="comb-title">🔥 COMBINE BACONS</div>
+      <button class="bb-close" onclick="closeCombine()">✕</button>
+    </div>
+    <div class="comb-body">
+      <div class="comb-subtitle">Fuse two bacons into a <strong style="color:var(--gold)">stronger hybrid</strong>. The result is always one rarity tier higher than your best ingredient. Both bacons are consumed.</div>
+
+      <div class="comb-slots">
+        <div class="comb-slot" id="comb-slot-a" onclick="openBaconPicker('a')">
+          <div id="comb-slot-a-face"></div>
+          <div id="comb-slot-a-label">Click to pick</div>
+        </div>
+        <div class="comb-arrow">+</div>
+        <div class="comb-slot" id="comb-slot-b" onclick="openBaconPicker('b')">
+          <div id="comb-slot-b-face"></div>
+          <div id="comb-slot-b-label">Click to pick</div>
+        </div>
+        <div class="comb-arrow">→</div>
+        <div class="comb-result-box" id="comb-result-box">
+          <div class="comb-result-label">Result</div>
+          <div id="comb-preview-face"><div style="font-size:2.5rem;opacity:.2">❓</div></div>
+          <div class="comb-result-name" id="comb-preview-name"></div>
+          <div class="comb-result-desc" id="comb-preview-desc"></div>
+        </div>
+      </div>
+
+      <div class="comb-cost-row">
+        <div class="comb-cost-label">🫙 Cost</div>
+        <div class="comb-cost-val" id="comb-cost-display">Pick 2 bacons</div>
+        <div style="font-size:.7rem;color:#664433">You have: <span id="comb-gp-have" style="color:var(--grease);font-weight:900">0</span> GP</div>
+      </div>
+
+      <button class="comb-do-btn" id="comb-do-btn" onclick="doCombine()" disabled>🔥 COMBINE!</button>
+    </div>
+
+    <!-- Picker sub-panel -->
+    <div class="comb-pick-overlay" id="comb-pick-overlay" style="display:none">
+      <div class="comb-pick-title" id="comb-pick-title">PICK BACON A</div>
+      <div class="comb-pick-grid" id="comb-pick-grid"></div>
+      <button class="comb-pick-cancel" onclick="closeBaconPicker()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ── Background bits ─────────────────────────────────────────
-['🥓','🥓','🥓','🍳','🌶️','💥'].forEach(e => {
+['🥓','🥓','🥓','🍳','🌶️','💥','🫙'].forEach(e=>{
   for(let i=0;i<3;i++){
     const el=document.createElement('div');el.className='bit';el.textContent=e;
-    el.style.left=Math.random()*100+'%';
-    el.style.fontSize=(1+Math.random()*1.5)+'rem';
-    el.style.animationDuration=(8+Math.random()*14)+'s';
-    el.style.animationDelay=(-Math.random()*20)+'s';
+    el.style.left=Math.random()*100+'%';el.style.fontSize=(1+Math.random()*1.5)+'rem';
+    el.style.animationDuration=(8+Math.random()*14)+'s';el.style.animationDelay=(-Math.random()*20)+'s';
     document.getElementById('bgBits').appendChild(el);
   }
 });
 
-// ── Rarity ──────────────────────────────────────────────────
-const RARITY = {
-  common:    { label:'Common',    color:'#aaaaaa', glow:'rgba(170,170,170,.35)', icon:'⚪' },
-  uncommon:  { label:'Uncommon',  color:'#2ecc71', glow:'rgba(46,204,113,.4)',   icon:'🟢' },
-  rare:      { label:'Rare',      color:'#3498db', glow:'rgba(52,152,219,.5)',   icon:'🔵' },
-  epic:      { label:'Epic',      color:'#9b59b6', glow:'rgba(155,89,182,.55)',  icon:'🟣' },
-  legendary: { label:'Legendary', color:'#f1c40f', glow:'rgba(241,196,15,.6)',   icon:'🌟' },
+const RARITY={
+  common:   {label:'Common',   color:'#aaaaaa',glow:'rgba(170,170,170,.35)',icon:'⚪',gp:10, combCost:30 },
+  uncommon: {label:'Uncommon', color:'#2ecc71',glow:'rgba(46,204,113,.4)',  icon:'🟢',gp:20, combCost:60 },
+  rare:     {label:'Rare',     color:'#3498db',glow:'rgba(52,152,219,.5)',  icon:'🔵',gp:35, combCost:100},
+  epic:     {label:'Epic',     color:'#9b59b6',glow:'rgba(155,89,182,.55)', icon:'🟣',gp:60, combCost:150},
+  legendary:{label:'Legendary',color:'#f1c40f',glow:'rgba(241,196,15,.6)',  icon:'🌟',gp:100,combCost:200},
 };
-function getRarity(e){ return RARITY[e.rarity]||RARITY.common; }
+const RARITY_ORDER=['common','uncommon','rare','epic','legendary'];
+function getRarity(e){return RARITY[e.rarity]||RARITY.common;}
+function nextRarity(r){const i=RARITY_ORDER.indexOf(r);return RARITY_ORDER[Math.min(i+1,RARITY_ORDER.length-1)];}
 
-// ── Full bacon roster ────────────────────────────────────────
-// Each bacon has its own unique design via extra SVG properties
-const ALL_BACONS = [
-  // ── Original 6 ──
-  { name:"Sir Sizzles-a-Lot", hp:60,  power:[8,16],  flavor:"A noble bacon of ancient grease lineage.",      rarity:"common",    bodyColor:"#c0392b", fatColor:"#e8d08a", eyeColor:"#2c1810", angryBrows:false, blush:.5,  sweat:false, boss:false, mouthPath:"36,88 Q54,98 72,88", extras:'' },
-  { name:"Crispy McFry",      hp:80,  power:[12,20], flavor:"Overdone. Overconfident. Dangerous.",            rarity:"uncommon",  bodyColor:"#7a1e00", fatColor:"#b06030", eyeColor:"#000",    angryBrows:true,  blush:0,   sweat:false, boss:false, mouthPath:"36,90 Q54,83 72,90", extras:'' },
-  { name:"Baron Von Rashers", hp:50,  power:[6,12],  flavor:"A thin, flimsy aristocrat of the pan.",         rarity:"common",    bodyColor:"#d4574a", fatColor:"#f0c080", eyeColor:"#3c2010", angryBrows:false, blush:.6,  sweat:true,  boss:false, mouthPath:"36,88 Q54,97 72,88", extras:'mustache' },
-  { name:"The Thick Cut",     hp:100, power:[18,28], flavor:"You feel an ominous sizzle in the air.",        rarity:"rare",      bodyColor:"#900000", fatColor:"#b05040", eyeColor:"#111",    angryBrows:true,  blush:0,   sweat:false, boss:false, mouthPath:"34,90 Q54,82 74,90", extras:'' },
-  { name:"Peppered Pete",     hp:70,  power:[10,22], flavor:"Coated in black pepper and bad attitude.",      rarity:"uncommon",  bodyColor:"#a82810", fatColor:"#c88050", eyeColor:"#1a0a00", angryBrows:true,  blush:.2,  sweat:false, boss:false, mouthPath:"36,88 Q54,94 72,84", extras:'pepper' },
-  { name:"Mega-Rasher",       hp:130, power:[22,36], flavor:"BOSS BACON. Truly the final strip.",            rarity:"legendary", bodyColor:"#5a0000", fatColor:"#8a2010", eyeColor:"#cc0000", angryBrows:true,  blush:0,   sweat:false, boss:true,  mouthPath:"33,91 Q54,82 75,91", extras:'crown' },
-
-  // ── New bacons ──
-  {
-    // Celtics green, gold details, dreadlock-style wavy fat lines, number 0 on strip
-    name:"Tatum Bacon", hp:115, power:[20,32],
-    flavor:"Drops 30 on you every single night. No days off.",
-    rarity:"epic",
-    bodyColor:"#007a33", fatColor:"#ffc72c", eyeColor:"#003300",
-    angryBrows:true, blush:0, sweat:false, boss:false,
-    mouthPath:"34,88 Q54,95 74,88",
-    extras:'tatum'
-  },
-  {
-    name:"Golden Strip",  hp:90,  power:[16,26],
-    flavor:"Blessed by the frying gods. Gleams under the kitchen light.",
-    rarity:"legendary",
-    bodyColor:"#b8860b", fatColor:"#fffacd", eyeColor:"#5a3e00",
-    angryBrows:false, blush:.3, sweat:false, boss:false,
-    mouthPath:"36,88 Q54,98 72,88",
-    extras:'golden'
-  },
-  {
-    name:"Burnt Offering", hp:55,  power:[8,18],
-    flavor:"Too long in the pan. Bitter about it.",
-    rarity:"common",
-    bodyColor:"#1a0800", fatColor:"#3a1a00", eyeColor:"#ff4400",
-    angryBrows:true, blush:0, sweat:false, boss:false,
-    mouthPath:"36,92 Q54,84 72,92",
-    extras:'burnt'
-  },
-  {
-    name:"Turkey Impostor", hp:75, power:[11,21],
-    flavor:"Claims to be turkey bacon. Everyone knows. Nobody says anything.",
-    rarity:"uncommon",
-    bodyColor:"#c4956a", fatColor:"#f5deb3", eyeColor:"#4a2800",
-    angryBrows:false, blush:.4, sweat:true, boss:false,
-    mouthPath:"36,88 Q54,96 72,88",
-    extras:'turkey'
-  },
-  {
-    name:"Raw Rasher",  hp:45,  power:[5,11],
-    flavor:"Not ready. Thinks it is. It is not.",
-    rarity:"common",
-    bodyColor:"#ffb6c1", fatColor:"#fff0f0", eyeColor:"#cc2244",
-    angryBrows:false, blush:.8, sweat:false, boss:false,
-    mouthPath:"36,88 Q54,98 72,88",
-    extras:''
-  },
-  {
-    name:"The Smoked One", hp:95,  power:[17,27],
-    flavor:"Slow-smoked for 12 hours. Has opinions about everything.",
-    rarity:"rare",
-    bodyColor:"#4a2800", fatColor:"#8b5e3c", eyeColor:"#220000",
-    angryBrows:true, blush:0, sweat:false, boss:false,
-    mouthPath:"34,90 Q54,83 74,90",
-    extras:'smoke'
-  },
-  {
-    name:"Maple Maniac",  hp:68,  power:[9,19],
-    flavor:"Drenched in maple syrup. Suspiciously cheerful.",
-    rarity:"uncommon",
-    bodyColor:"#c0392b", fatColor:"#d4a017", eyeColor:"#3c1800",
-    angryBrows:false, blush:.7, sweat:false, boss:false,
-    mouthPath:"36,86 Q54,100 72,86",
-    extras:'maple'
-  },
-  {
-    name:"Candied Chaos",  hp:110, power:[19,29],
-    flavor:"Coated in brown sugar and pure unhinged energy.",
-    rarity:"epic",
-    bodyColor:"#8B0000", fatColor:"#ff8c00", eyeColor:"#000",
-    angryBrows:true, blush:0, sweat:false, boss:false,
-    mouthPath:"33,88 Q54,98 75,88",
-    extras:'candy'
-  },
+const ALL_BACONS=[
+  {name:"Sir Sizzles-a-Lot",hp:60, power:[8,16], flavor:"A noble bacon of ancient grease lineage.",                  rarity:"common",   bodyColor:"#c0392b",fatColor:"#e8d08a",eyeColor:"#2c1810",angryBrows:false,blush:.5, sweat:false,boss:false,mouthPath:"36,88 Q54,98 72,88", extras:''},
+  {name:"Crispy McFry",     hp:80, power:[12,20],flavor:"Overdone. Overconfident. Dangerous.",                        rarity:"uncommon", bodyColor:"#7a1e00",fatColor:"#b06030",eyeColor:"#000",   angryBrows:true, blush:0,  sweat:false,boss:false,mouthPath:"36,90 Q54,83 72,90", extras:''},
+  {name:"Baron Von Rashers",hp:50, power:[6,12], flavor:"A thin, flimsy aristocrat of the pan.",                      rarity:"common",   bodyColor:"#d4574a",fatColor:"#f0c080",eyeColor:"#3c2010",angryBrows:false,blush:.6, sweat:true, boss:false,mouthPath:"36,88 Q54,97 72,88", extras:'mustache'},
+  {name:"The Thick Cut",    hp:100,power:[18,28],flavor:"You feel an ominous sizzle in the air.",                     rarity:"rare",     bodyColor:"#900000",fatColor:"#b05040",eyeColor:"#111",   angryBrows:true, blush:0,  sweat:false,boss:false,mouthPath:"34,90 Q54,82 74,90", extras:''},
+  {name:"Peppered Pete",    hp:70, power:[10,22],flavor:"Coated in black pepper and bad attitude.",                   rarity:"uncommon", bodyColor:"#a82810",fatColor:"#c88050",eyeColor:"#1a0a00",angryBrows:true, blush:.2, sweat:false,boss:false,mouthPath:"36,88 Q54,94 72,84", extras:'pepper'},
+  {name:"Mega-Rasher",      hp:130,power:[22,36],flavor:"BOSS BACON. Truly the final strip.",                         rarity:"legendary",bodyColor:"#5a0000",fatColor:"#8a2010",eyeColor:"#cc0000",angryBrows:true, blush:0,  sweat:false,boss:true, mouthPath:"33,91 Q54,82 75,91", extras:'crown'},
+  {name:"Tatum Bacon",      hp:115,power:[20,32],flavor:"Drops 30 on you every single night. No days off.",           rarity:"epic",     bodyColor:"#007a33",fatColor:"#ffc72c",eyeColor:"#003300",angryBrows:true, blush:0,  sweat:false,boss:false,mouthPath:"34,88 Q54,95 74,88", extras:'tatum'},
+  {name:"Golden Strip",     hp:90, power:[16,26],flavor:"Blessed by the frying gods. Gleams under the kitchen light.",rarity:"legendary",bodyColor:"#b8860b",fatColor:"#fffacd",eyeColor:"#5a3e00",angryBrows:false,blush:.3, sweat:false,boss:false,mouthPath:"36,88 Q54,98 72,88", extras:'golden'},
+  {name:"Burnt Offering",   hp:55, power:[8,18], flavor:"Too long in the pan. Bitter about it.",                      rarity:"common",   bodyColor:"#1a0800",fatColor:"#3a1a00",eyeColor:"#ff4400",angryBrows:true, blush:0,  sweat:false,boss:false,mouthPath:"36,92 Q54,84 72,92", extras:'burnt'},
+  {name:"Turkey Impostor",  hp:75, power:[11,21],flavor:"Claims to be turkey bacon. Everyone knows. Nobody says anything.",rarity:"uncommon",bodyColor:"#c4956a",fatColor:"#f5deb3",eyeColor:"#4a2800",angryBrows:false,blush:.4,sweat:true,boss:false,mouthPath:"36,88 Q54,96 72,88",extras:'turkey'},
+  {name:"Raw Rasher",       hp:45, power:[5,11], flavor:"Not ready. Thinks it is. It is not.",                        rarity:"common",   bodyColor:"#ffb6c1",fatColor:"#fff0f0",eyeColor:"#cc2244",angryBrows:false,blush:.8, sweat:false,boss:false,mouthPath:"36,88 Q54,98 72,88", extras:''},
+  {name:"The Smoked One",   hp:95, power:[17,27],flavor:"Slow-smoked for 12 hours. Has opinions about everything.",   rarity:"rare",     bodyColor:"#4a2800",fatColor:"#8b5e3c",eyeColor:"#220000",angryBrows:true, blush:0,  sweat:false,boss:false,mouthPath:"34,90 Q54,83 74,90", extras:'smoke'},
+  {name:"Maple Maniac",     hp:68, power:[9,19], flavor:"Drenched in maple syrup. Suspiciously cheerful.",            rarity:"uncommon", bodyColor:"#c0392b",fatColor:"#d4a017",eyeColor:"#3c1800",angryBrows:false,blush:.7, sweat:false,boss:false,mouthPath:"36,86 Q54,100 72,86",extras:'maple'},
+  {name:"Candied Chaos",    hp:110,power:[19,29],flavor:"Coated in brown sugar and pure unhinged energy.",            rarity:"epic",     bodyColor:"#8B0000",fatColor:"#ff8c00",eyeColor:"#000",   angryBrows:true, blush:0,  sweat:false,boss:false,mouthPath:"33,88 Q54,98 75,88", extras:'candy'},
 ];
 
-// ── Build SVG face ───────────────────────────────────────────
-function buildFace(cfg, size) {
-  size = size || 112;
-  const browL   = cfg.angryBrows ? "M28,66 Q40,59 50,65" : "M30,66 Q40,62 50,65";
-  const browR   = cfg.angryBrows ? "M58,66 Q68,59 80,65" : "M58,66 Q68,62 80,65";
-  const browCol = cfg.boss ? "#ff3333" : (cfg.extras==='tatum' ? "#ffc72c" : "#7B3F00");
-  const ang     = cfg.angryBrows ? "bb-angry" : "";
-
-  const sweatSVG = cfg.sweat ? `<g class="bb-sweat"><ellipse cx="100" cy="52" rx="3.2" ry="4.5" fill="#74b9ff" opacity=".9"/><polygon points="96.8,54 103.2,54 100,46" fill="#74b9ff" opacity=".9"/></g>` : '';
-  const bossRing = cfg.boss ? `<ellipse class="bb-boss-ring" cx="59" cy="76" rx="52" ry="30" fill="none" stroke="#ff2200" stroke-width="2.5"/><ellipse class="bb-boss-ring" cx="59" cy="76" rx="58" ry="34" fill="none" stroke="#ff220055" stroke-width="1.5" style="animation-delay:.8s"/>` : '';
-
-  // Extra decorations per bacon type
-  let extraSVG = '';
-  const ex = cfg.extras;
-  if (ex === 'mustache') {
-    extraSVG = `<path d="M45,80 Q51,75 57,79 Q63,75 69,80" fill="none" stroke="#7B3F00" stroke-width="2.2" stroke-linecap="round"/>`;
-  } else if (ex === 'pepper') {
-    extraSVG = `<circle cx="28" cy="74" r="2.2" fill="#222" opacity=".7"/><circle cx="50" cy="67" r="1.8" fill="#222" opacity=".7"/><circle cx="74" cy="70" r="2.4" fill="#222" opacity=".6"/><circle cx="42" cy="83" r="1.6" fill="#222" opacity=".6"/><circle cx="92" cy="62" r="2" fill="#222" opacity=".6"/>`;
-  } else if (ex === 'crown') {
-    extraSVG = `<path d="M38,38 L46,24 L59,34 L72,24 L80,38 Z" fill="${cfg.fatColor}" stroke="#ff3300" stroke-width="1.5"/><circle cx="59" cy="34" r="3.5" fill="#ff2200"/><circle cx="46" cy="25" r="2.5" fill="#ff6600"/><circle cx="72" cy="25" r="2.5" fill="#ff6600"/>`;
-  } else if (ex === 'tatum') {
-    // Celtics shamrock, gold chain, number 0
-    extraSVG = `
-      <text x="54" y="76" text-anchor="middle" font-size="10" font-family="Arial Black" font-weight="900" fill="#ffc72c" opacity=".9">0</text>
-      <ellipse cx="54" cy="96" rx="18" ry="4" fill="none" stroke="#ffc72c" stroke-width="1.5" opacity=".7"/>
-      <circle cx="36" cy="96" r="2" fill="#ffc72c" opacity=".8"/>
-      <circle cx="72" cy="96" r="2" fill="#ffc72c" opacity=".8"/>
-      <path d="M44,26 Q54,18 64,26 Q74,18 74,28 Q84,36 64,42 Q54,46 44,42 Q24,36 34,28 Q34,18 44,26 Z" fill="#007a33" stroke="#ffc72c" stroke-width="1.2" opacity=".85"/>
-      <circle cx="54" cy="34" r="3" fill="#ffc72c"/>`;
-  } else if (ex === 'golden') {
-    extraSVG = `<ellipse class="bb-boss-ring" cx="59" cy="76" rx="48" ry="28" fill="none" stroke="#ffd700" stroke-width="2" opacity=".6"/><circle cx="30" cy="68" r="3" fill="#ffd700" opacity=".7"/><circle cx="88" cy="68" r="3" fill="#ffd700" opacity=".7"/>`;
-  } else if (ex === 'burnt') {
-    extraSVG = `<circle cx="28" cy="72" r="3.5" fill="#000" opacity=".5"/><circle cx="70" cy="65" r="2.5" fill="#000" opacity=".4"/><circle cx="50" cy="80" r="4" fill="#000" opacity=".45"/><circle cx="90" cy="74" r="3" fill="#000" opacity=".4"/>`;
-  } else if (ex === 'turkey') {
-    extraSVG = `<text x="54" y="44" text-anchor="middle" font-size="11" opacity=".8">🦃</text>`;
-  } else if (ex === 'smoke') {
-    extraSVG = `<ellipse class="bb-steam" cx="30" cy="10" rx="5" ry="7" fill="rgba(100,80,60,.5)"/><ellipse class="bb-steam s2" cx="54" cy="6" rx="4" ry="6" fill="rgba(100,80,60,.5)"/><ellipse class="bb-steam s3" cx="82" cy="10" rx="5" ry="7" fill="rgba(100,80,60,.5)"/>`;
-  } else if (ex === 'maple') {
-    extraSVG = `<text x="95" y="52" font-size="12" opacity=".85">🍁</text>`;
-  } else if (ex === 'candy') {
-    extraSVG = `<circle cx="24" cy="72" r="4" fill="#ff69b4" opacity=".7"/><circle cx="84" cy="72" r="4" fill="#ff69b4" opacity=".7"/><circle cx="54" cy="58" r="3" fill="#ff8c00" opacity=".8"/>`;
-  }
-
-  return `<svg width="${size}" height="${size}" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <ellipse class="bb-steam"    cx="28" cy="12" rx="4"   ry="6" fill="rgba(255,210,160,.45)"/>
-  <ellipse class="bb-steam s2" cx="56" cy="8"  rx="3.5" ry="5" fill="rgba(255,210,160,.45)"/>
-  <ellipse class="bb-steam s3" cx="86" cy="12" rx="4"   ry="6" fill="rgba(255,210,160,.45)"/>
-  ${ex==='crown'||ex==='tatum'?extraSVG:''}
-  ${bossRing}
+function buildFace(cfg,size){
+  size=size||112;
+  const browL=cfg.angryBrows?"M28,66 Q40,59 50,65":"M30,66 Q40,62 50,65";
+  const browR=cfg.angryBrows?"M58,66 Q68,59 80,65":"M58,66 Q68,62 80,65";
+  const browCol=cfg.boss?"#ff3333":(cfg.extras==='tatum'?"#ffc72c":(cfg.combined?"#9b59b6":"#7B3F00"));
+  const ang=cfg.angryBrows?"bb-angry":"";
+  const sweatSVG=cfg.sweat?`<g class="bb-sweat"><ellipse cx="100" cy="52" rx="3.2" ry="4.5" fill="#74b9ff" opacity=".9"/><polygon points="96.8,54 103.2,54 100,46" fill="#74b9ff" opacity=".9"/></g>`:'';
+  const bossRing=cfg.boss?`<ellipse class="bb-boss-ring" cx="59" cy="76" rx="52" ry="30" fill="none" stroke="#ff2200" stroke-width="2.5"/><ellipse class="bb-boss-ring" cx="59" cy="76" rx="58" ry="34" fill="none" stroke="#ff220055" stroke-width="1.5" style="animation-delay:.8s"/>`:'';
+  const ex=cfg.extras||'';
+  let extraSVG='';
+  if(ex==='mustache')extraSVG=`<path d="M45,80 Q51,75 57,79 Q63,75 69,80" fill="none" stroke="#7B3F00" stroke-width="2.2" stroke-linecap="round"/>`;
+  else if(ex==='pepper')extraSVG=`<circle cx="28" cy="74" r="2.2" fill="#222" opacity=".7"/><circle cx="50" cy="67" r="1.8" fill="#222" opacity=".7"/><circle cx="74" cy="70" r="2.4" fill="#222" opacity=".6"/><circle cx="42" cy="83" r="1.6" fill="#222" opacity=".6"/><circle cx="92" cy="62" r="2" fill="#222" opacity=".6"/>`;
+  else if(ex==='crown')extraSVG=`<path d="M38,38 L46,24 L59,34 L72,24 L80,38 Z" fill="${cfg.fatColor}" stroke="#ff3300" stroke-width="1.5"/><circle cx="59" cy="34" r="3.5" fill="#ff2200"/><circle cx="46" cy="25" r="2.5" fill="#ff6600"/><circle cx="72" cy="25" r="2.5" fill="#ff6600"/>`;
+  else if(ex==='tatum')extraSVG=`<text x="54" y="76" text-anchor="middle" font-size="10" font-family="Arial Black" font-weight="900" fill="#ffc72c" opacity=".9">0</text><ellipse cx="54" cy="96" rx="18" ry="4" fill="none" stroke="#ffc72c" stroke-width="1.5" opacity=".7"/><circle cx="36" cy="96" r="2" fill="#ffc72c" opacity=".8"/><circle cx="72" cy="96" r="2" fill="#ffc72c" opacity=".8"/><path d="M44,26 Q54,18 64,26 Q74,18 74,28 Q84,36 64,42 Q54,46 44,42 Q24,36 34,28 Q34,18 44,26 Z" fill="#007a33" stroke="#ffc72c" stroke-width="1.2" opacity=".85"/><circle cx="54" cy="34" r="3" fill="#ffc72c"/>`;
+  else if(ex==='golden')extraSVG=`<ellipse class="bb-boss-ring" cx="59" cy="76" rx="48" ry="28" fill="none" stroke="#ffd700" stroke-width="2" opacity=".6"/><circle cx="30" cy="68" r="3" fill="#ffd700" opacity=".7"/><circle cx="88" cy="68" r="3" fill="#ffd700" opacity=".7"/>`;
+  else if(ex==='burnt')extraSVG=`<circle cx="28" cy="72" r="3.5" fill="#000" opacity=".5"/><circle cx="70" cy="65" r="2.5" fill="#000" opacity=".4"/><circle cx="50" cy="80" r="4" fill="#000" opacity=".45"/><circle cx="90" cy="74" r="3" fill="#000" opacity=".4"/>`;
+  else if(ex==='turkey')extraSVG=`<text x="54" y="44" text-anchor="middle" font-size="11" opacity=".8">🦃</text>`;
+  else if(ex==='smoke')extraSVG=`<ellipse class="bb-steam" cx="30" cy="10" rx="5" ry="7" fill="rgba(100,80,60,.5)"/><ellipse class="bb-steam s2" cx="54" cy="6" rx="4" ry="6" fill="rgba(100,80,60,.5)"/><ellipse class="bb-steam s3" cx="82" cy="10" rx="5" ry="7" fill="rgba(100,80,60,.5)"/>`;
+  else if(ex==='maple')extraSVG=`<text x="95" y="52" font-size="12" opacity=".85">🍁</text>`;
+  else if(ex==='candy')extraSVG=`<circle cx="24" cy="72" r="4" fill="#ff69b4" opacity=".7"/><circle cx="84" cy="72" r="4" fill="#ff69b4" opacity=".7"/><circle cx="54" cy="58" r="3" fill="#ff8c00" opacity=".8"/>`;
+  else if(ex==='combined')extraSVG=`<ellipse class="bb-boss-ring" cx="59" cy="76" rx="50" ry="28" fill="none" stroke="${cfg.fatColor||'#f39c12'}" stroke-width="1.5" opacity=".6"/><circle cx="20" cy="66" r="3" fill="${cfg.fatColor||'#f39c12'}" opacity=".5"/><circle cx="98" cy="66" r="3" fill="${cfg.fatColor||'#f39c12'}" opacity=".5"/>`;
+  return`<svg width="${size}" height="${size}" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <ellipse class="bb-steam" cx="28" cy="12" rx="4" ry="6" fill="rgba(255,210,160,.45)"/>
+  <ellipse class="bb-steam s2" cx="56" cy="8" rx="3.5" ry="5" fill="rgba(255,210,160,.45)"/>
+  <ellipse class="bb-steam s3" cx="86" cy="12" rx="4" ry="6" fill="rgba(255,210,160,.45)"/>
+  ${ex==='crown'||ex==='tatum'?extraSVG:''}${bossRing}
   <path d="M6,70 Q18,48 36,64 Q54,80 72,57 Q88,34 112,52 L112,82 Q88,62 72,85 Q54,102 36,92 Q18,96 6,96 Z" fill="${cfg.bodyColor}"/>
   <path d="M6,70 Q18,48 36,64 Q54,80 72,57 Q88,34 112,52 L112,62 Q88,44 72,67 Q54,90 36,74 Q18,58 6,80 Z" fill="${cfg.fatColor}" opacity=".88"/>
   <path d="M6,84 Q18,79 36,82 Q54,94 72,78 Q88,58 112,72 L112,82 Q88,62 72,85 Q54,102 36,92 Q18,96 6,96 Z" fill="${cfg.fatColor}" opacity=".72"/>
@@ -525,22 +459,32 @@ function buildFace(cfg, size) {
   <path id="bb-mouth" d="M${cfg.mouthPath}" fill="none" stroke="#1a0a00" stroke-width="3.5" stroke-linecap="round"/>
   <ellipse cx="26" cy="80" rx="7" ry="4.5" fill="#e8637a" opacity="${cfg.blush}"/>
   <ellipse cx="90" cy="80" rx="7" ry="4.5" fill="#e8637a" opacity="${cfg.blush}"/>
-  ${ex!=='crown'&&ex!=='tatum'?extraSVG:''}
-  ${sweatSVG}
+  ${ex!=='crown'&&ex!=='tatum'?extraSVG:''}${sweatSVG}
 </svg>`;
 }
 
-// ── Spawn system ─────────────────────────────────────────────
+// helper to get a renderable cfg for a team member (handles combined bacons)
+function getCfg(b){
+  const base=ALL_BACONS.find(e=>e.name===b.name);
+  if(base)return base;
+  return{name:b.name,rarity:b.rarity,hp:b.hp||80,power:b.power||[10,20],
+    bodyColor:b.bodyColor||'#7a1e00',fatColor:b.fatColor||'#c08050',
+    eyeColor:b.eyeColor||'#222',angryBrows:b.angryBrows||false,
+    blush:b.blush||.3,sweat:false,boss:false,
+    mouthPath:b.mouthPath||'36,88 Q54,98 72,88',
+    extras:'combined',combined:true,flavor:b.flavor||'A mysterious fusion.'};
+}
+
+// ── Spawn ────────────────────────────────────────────────────
 const SPAWN_MIN=20,SPAWN_MAX=50,VISIBLE_MIN=15,VISIBLE_MAX=30;
 let spawnTimeout=null,despawnTimeout=null,timerInterval=null,timerDeadline=0,timerMode='';
 let iconVisible=false,battleOpen=false;
 function rndBetween(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 function updateTimerDisplay(){
-  const el=document.getElementById('bb-timer');
-  const remaining=Math.max(0,Math.ceil((timerDeadline-Date.now())/1000));
+  const el=document.getElementById('bb-timer'),remaining=Math.max(0,Math.ceil((timerDeadline-Date.now())/1000));
   if(timerMode==='spawning'){el.textContent='🥓 spawns in: '+remaining+'s';el.style.color='#cc9966';}
   else if(timerMode==='visible'){el.textContent='🥓 vanishes in: '+remaining+'s';el.style.color='#f1c40f';}
-  else{el.textContent='';}
+  else el.textContent='';
 }
 function scheduleSpawn(){
   const delay=rndBetween(SPAWN_MIN,SPAWN_MAX)*1000;
@@ -553,8 +497,7 @@ function showIcon(){
   const icon=document.getElementById('bb-icon');icon.style.display='flex';
   const visibleFor=rndBetween(VISIBLE_MIN,VISIBLE_MAX)*1000;
   timerDeadline=Date.now()+visibleFor;timerMode='visible';
-  timerInterval=setInterval(updateTimerDisplay,500);
-  despawnTimeout=setTimeout(hideIcon,visibleFor);
+  timerInterval=setInterval(updateTimerDisplay,500);despawnTimeout=setTimeout(hideIcon,visibleFor);
 }
 function hideIcon(){
   clearInterval(timerInterval);clearTimeout(despawnTimeout);iconVisible=false;
@@ -569,101 +512,60 @@ function onIconClick(){
 }
 scheduleSpawn();
 
-// ── Game state ───────────────────────────────────────────────
-let state={};
-let playerTeam=[];
-let turnLock=false;
-let pendingWin=null;
-let chosenBacon=null;
-try{playerTeam=JSON.parse(localStorage.getItem('baconTeam')||'[]');}catch(e){}
-
-// Give 2 starter bacons if team is empty (so you can always fight)
+// ── State ────────────────────────────────────────────────────
+let state={},playerTeam=[],greasePoints=0,turnLock=false,pendingWin=null,chosenBacon=null;
+try{const s=JSON.parse(localStorage.getItem('bbSave')||'null');if(s){playerTeam=s.team||[];greasePoints=s.gp||0;}}catch(e){}
 if(!playerTeam.length){
-  playerTeam=[
-    {name:'Sir Sizzles-a-Lot',rarity:'common',level:1},
-    {name:'Tatum Bacon',rarity:'epic',level:1}
-  ];
-  try{localStorage.setItem('baconTeam',JSON.stringify(playerTeam));}catch(e){}
+  playerTeam=[{name:'Sir Sizzles-a-Lot',rarity:'common',level:1},{name:'Tatum Bacon',rarity:'epic',level:1}];
+}
+function saveState(){try{localStorage.setItem('bbSave',JSON.stringify({team:playerTeam,gp:greasePoints}));}catch(e){}}
+function updateGPDisplay(){
+  document.getElementById('gp-display').textContent=greasePoints;
+  document.getElementById('comb-gp-have').textContent=greasePoints;
+  document.getElementById('open-combine-btn').disabled=playerTeam.length<2;
 }
 
-const rnd  =(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-
 function rollHit(min,max){
   const base=rnd(min,max),r=Math.random();
-  if(r<.08)return{dmg:0,tier:'miss'};
-  if(r<.18)return{dmg:Math.round(base*.5),tier:'weak'};
-  if(r<.75)return{dmg:base,tier:'normal'};
-  if(r<.92)return{dmg:Math.round(base*1.4),tier:'strong'};
+  if(r<.08)return{dmg:0,tier:'miss'};if(r<.18)return{dmg:Math.round(base*.5),tier:'weak'};
+  if(r<.75)return{dmg:base,tier:'normal'};if(r<.92)return{dmg:Math.round(base*1.4),tier:'strong'};
   return{dmg:Math.round(base*1.9),tier:'crit'};
 }
 
 // ── Squad picker ─────────────────────────────────────────────
 function openSquadPicker(){
-  battleOpen=true;
-  chosenBacon=null;
-  const grid=document.getElementById('sq-grid');
-  grid.innerHTML='';
-  const fightBtn=document.getElementById('sq-fight-btn');
-  fightBtn.classList.remove('ready');
-
-  if(!playerTeam.length){
-    grid.innerHTML='<div class="sq-empty">No bacons yet! Win battles to recruit them.</div>';
-  } else {
-    playerTeam.forEach((b,i)=>{
-      const cfg=ALL_BACONS.find(e=>e.name===b.name)||ALL_BACONS[0];
-      const rar=getRarity(cfg);
-      const card=document.createElement('div');
-      card.className='sq-card';
-      card.style.borderColor=rar.color;
-      card.innerHTML=`<div style="line-height:0">${buildFace(cfg,64)}</div>
-        <div class="sq-card-name">${b.name}</div>
-        <div class="sq-card-rarity" style="color:${rar.color}">${rar.icon} ${rar.label}</div>
-        <div class="sq-card-lv">Lv.${b.level}</div>`;
-      card.onclick=()=>{
-        document.querySelectorAll('.sq-card').forEach(c=>c.classList.remove('sq-selected'));
-        card.classList.add('sq-selected');
-        chosenBacon=b;
-        fightBtn.classList.add('ready');
-      };
-      grid.appendChild(card);
-    });
-  }
+  battleOpen=true;chosenBacon=null;
+  const grid=document.getElementById('sq-grid');grid.innerHTML='';
+  const fightBtn=document.getElementById('sq-fight-btn');fightBtn.classList.remove('ready');
+  if(!playerTeam.length){grid.innerHTML='<div class="sq-empty">No bacons yet! Win battles to recruit them.</div>';}
+  else playerTeam.forEach(b=>{
+    const cfg=getCfg(b),rar=RARITY[b.rarity]||RARITY.common;
+    const card=document.createElement('div');card.className='sq-card';card.style.borderColor=rar.color;
+    card.innerHTML=`<div style="line-height:0">${buildFace(cfg,64)}</div>
+      <div class="sq-card-name">${b.name}</div>
+      <div class="sq-card-rarity" style="color:${rar.color}">${rar.icon} ${rar.label}</div>
+      <div class="sq-card-lv">Lv.${b.level}</div>`;
+    card.onclick=()=>{document.querySelectorAll('.sq-card').forEach(c=>c.classList.remove('sq-selected'));card.classList.add('sq-selected');chosenBacon=b;fightBtn.classList.add('ready');};
+    grid.appendChild(card);
+  });
   document.getElementById('bb-squad-overlay').classList.add('active');
 }
-
-function closeSquad(){
-  battleOpen=false;
-  document.getElementById('bb-squad-overlay').classList.remove('active');
-  scheduleSpawn();
-}
-
-function startBattle(){
-  if(!chosenBacon)return;
-  document.getElementById('bb-squad-overlay').classList.remove('active');
-  openBattle();
-}
+function closeSquad(){battleOpen=false;document.getElementById('bb-squad-overlay').classList.remove('active');scheduleSpawn();}
+function startBattle(){if(!chosenBacon)return;document.getElementById('bb-squad-overlay').classList.remove('active');openBattle();}
 
 // ── Battle ───────────────────────────────────────────────────
 function openBattle(){
   battleOpen=true;
-  // Random wild enemy (excluding the chosen bacon if possible)
   const wilds=ALL_BACONS.filter(e=>e.name!==chosenBacon.name);
   const enemy=wilds[Math.floor(Math.random()*wilds.length)];
-  const playerCfg=ALL_BACONS.find(e=>e.name===chosenBacon.name)||ALL_BACONS[0];
+  const playerCfg=getCfg(chosenBacon);
   const rar=getRarity(enemy);
-
-  state={
-    playerHp:playerCfg.hp, playerMaxHp:playerCfg.hp,
-    enemyHp:enemy.hp, enemyMaxHp:enemy.hp,
-    enemy, playerCfg
-  };
-  turnLock=false; pendingWin=null;
-
+  state={playerHp:playerCfg.hp,playerMaxHp:playerCfg.hp,enemyHp:enemy.hp,enemyMaxHp:enemy.hp,enemy,playerCfg};
+  turnLock=false;pendingWin=null;
   const win=document.getElementById('bb-window');
-  win.style.borderColor=rar.color;
-  win.style.boxShadow=`0 0 40px ${rar.glow},0 0 80px ${rar.glow},inset 0 1px 0 rgba(255,255,255,.05)`;
-
+  win.style.borderColor=rar.color;win.style.boxShadow=`0 0 40px ${rar.glow},0 0 80px ${rar.glow},inset 0 1px 0 rgba(255,255,255,.05)`;
   document.getElementById('bb-player-wrap').innerHTML=buildFace(playerCfg,112);
   document.getElementById('bb-player-name').textContent=chosenBacon.name;
   document.getElementById('bb-player-label').textContent=chosenBacon.name.split(' ')[0].toUpperCase().slice(0,4);
@@ -671,149 +573,68 @@ function openBattle(){
   document.getElementById('bb-enemy-name').textContent=enemy.name;
   document.getElementById('bb-combat-view').style.display='';
   document.getElementById('bb-result').classList.remove('show');
-  setButtons(true); updateBars();
-  document.getElementById('bb-log').innerHTML='';
+  setButtons(true);updateBars();document.getElementById('bb-log').innerHTML='';
   addLog('A wild '+enemy.name+' appeared!','highlight');
   addLog(rar.icon+' '+rar.label+' · '+enemy.flavor,'rarity-'+enemy.rarity);
   if(enemy.boss)addLog('⚠️ BOSS — this one hits hard!','crit');
   document.getElementById('bb-overlay').classList.add('active');
 }
-
-function closeBattle(){
-  battleOpen=false;
-  document.getElementById('bb-overlay').classList.remove('active');
-  scheduleSpawn();
-}
+function closeBattle(){battleOpen=false;document.getElementById('bb-overlay').classList.remove('active');scheduleSpawn();}
 
 function updateBars(){
-  const pp=Math.max(0,state.playerHp/state.playerMaxHp*100);
-  const ep=Math.max(0,state.enemyHp/state.enemyMaxHp*100);
+  const pp=Math.max(0,state.playerHp/state.playerMaxHp*100),ep=Math.max(0,state.enemyHp/state.enemyMaxHp*100);
   const pb=document.getElementById('bb-player-bar');
-  pb.style.width=pp+'%';
-  pb.style.background=pp>50?'#2ecc71':pp>25?'#f39c12':'#e74c3c';
+  pb.style.width=pp+'%';pb.style.background=pp>50?'#2ecc71':pp>25?'#f39c12':'#e74c3c';
   document.getElementById('bb-enemy-bar').style.width=ep+'%';
   document.getElementById('bb-player-val').textContent=Math.max(0,state.playerHp)+'/'+state.playerMaxHp;
   document.getElementById('bb-enemy-val').textContent=Math.max(0,state.enemyHp)+'/'+state.enemyMaxHp;
   setFaceExpression('normal');
 }
-
 function setFaceExpression(mode){
-  const mouth=document.getElementById('bb-mouth');
-  const browL=document.getElementById('bb-brow-l');
-  const browR=document.getElementById('bb-brow-r');
-  const pupilL=document.getElementById('bb-pupil-l');
-  const pupilR=document.getElementById('bb-pupil-r');
-  if(!mouth)return;
-  const cfg=state.enemy,ep=Math.max(0,state.enemyHp/state.enemyMaxHp*100);
-  if(mode==='hit'){
-    mouth.setAttribute('d','M36,92 Q54,86 72,92');mouth.setAttribute('stroke','#e74c3c');
-    if(pupilL)pupilL.setAttribute('r','3');if(pupilR)pupilR.setAttribute('r','3');
-    if(browL)browL.setAttribute('d','M28,64 Q40,70 50,64');if(browR)browR.setAttribute('d','M58,64 Q68,70 80,64');
-  } else if(mode==='attack'){
-    mouth.setAttribute('d','M36,88 Q54,95 72,88');mouth.setAttribute('stroke','#1a0a00');
-    if(pupilL)pupilL.setAttribute('r','6');if(pupilR)pupilR.setAttribute('r','6');
-    if(browL)browL.setAttribute('d',cfg.angryBrows?'M28,66 Q40,59 50,65':'M30,66 Q40,62 50,65');
-    if(browR)browR.setAttribute('d',cfg.angryBrows?'M58,66 Q68,59 80,65':'M58,66 Q68,62 80,65');
-  } else {
-    let mD,bL,bR,pR;
-    if(ep>66){mD=cfg.mouthPath;bL=cfg.angryBrows?'M28,66 Q40,59 50,65':'M30,66 Q40,62 50,65';bR=cfg.angryBrows?'M58,66 Q68,59 80,65':'M58,66 Q68,62 80,65';pR='5.5';}
-    else if(ep>33){mD='M36,91 Q54,84 72,91';bL='M28,63 Q40,68 50,64';bR='M58,64 Q68,68 80,63';pR='5';}
-    else{mD='M36,93 Q54,84 72,93';bL='M28,62 Q40,69 50,63';bR='M58,63 Q68,69 80,62';pR='4';}
-    mouth.setAttribute('d',mD);mouth.setAttribute('stroke',ep<=33?'#e74c3c':'#1a0a00');
-    if(browL)browL.setAttribute('d',bL);if(browR)browR.setAttribute('d',bR);
-    if(pupilL)pupilL.setAttribute('r',pR);if(pupilR)pupilR.setAttribute('r',pR);
-  }
+  const mouth=document.getElementById('bb-mouth'),browL=document.getElementById('bb-brow-l'),browR=document.getElementById('bb-brow-r'),pupilL=document.getElementById('bb-pupil-l'),pupilR=document.getElementById('bb-pupil-r');
+  if(!mouth)return;const cfg=state.enemy,ep=Math.max(0,state.enemyHp/state.enemyMaxHp*100);
+  if(mode==='hit'){mouth.setAttribute('d','M36,92 Q54,86 72,92');mouth.setAttribute('stroke','#e74c3c');if(pupilL)pupilL.setAttribute('r','3');if(pupilR)pupilR.setAttribute('r','3');if(browL)browL.setAttribute('d','M28,64 Q40,70 50,64');if(browR)browR.setAttribute('d','M58,64 Q68,70 80,64');}
+  else if(mode==='attack'){mouth.setAttribute('d','M36,88 Q54,95 72,88');mouth.setAttribute('stroke','#1a0a00');if(pupilL)pupilL.setAttribute('r','6');if(pupilR)pupilR.setAttribute('r','6');if(browL)browL.setAttribute('d',cfg.angryBrows?'M28,66 Q40,59 50,65':'M30,66 Q40,62 50,65');if(browR)browR.setAttribute('d',cfg.angryBrows?'M58,66 Q68,59 80,65':'M58,66 Q68,62 80,65');}
+  else{let mD,bL,bR,pR;if(ep>66){mD=cfg.mouthPath;bL=cfg.angryBrows?'M28,66 Q40,59 50,65':'M30,66 Q40,62 50,65';bR=cfg.angryBrows?'M58,66 Q68,59 80,65':'M58,66 Q68,62 80,65';pR='5.5';}else if(ep>33){mD='M36,91 Q54,84 72,91';bL='M28,63 Q40,68 50,64';bR='M58,64 Q68,68 80,63';pR='5';}else{mD='M36,93 Q54,84 72,93';bL='M28,62 Q40,69 50,63';bR='M58,63 Q68,69 80,62';pR='4';}mouth.setAttribute('d',mD);mouth.setAttribute('stroke',ep<=33?'#e74c3c':'#1a0a00');if(browL)browL.setAttribute('d',bL);if(browR)browR.setAttribute('d',bR);if(pupilL)pupilL.setAttribute('r',pR);if(pupilR)pupilR.setAttribute('r',pR);}
 }
-
-function addLog(text,cls){
-  const el=document.createElement('div');
-  el.className='bb-log-line'+(cls?' '+cls:'');
-  el.textContent=text;
-  const log=document.getElementById('bb-log');
-  log.appendChild(el);log.scrollTop=log.scrollHeight;
-}
+function addLog(text,cls){const el=document.createElement('div');el.className='bb-log-line'+(cls?' '+cls:'');el.textContent=text;const log=document.getElementById('bb-log');log.appendChild(el);log.scrollTop=log.scrollHeight;}
 function setButtons(on){document.querySelectorAll('.bb-btn').forEach(b=>b.disabled=!on);}
 function spawnPop(text,tier,x,y){
-  const cls=tier==='crit'?'crit':tier==='miss'?'miss':tier==='weak'?'weak':'dmg';
-  const el=document.createElement('div');
-  el.className='bb-pop '+cls;el.textContent=text;
+  const cls=tier==='crit'?'crit':tier==='miss'?'miss':tier==='weak'?'weak':tier==='gp'?'gp':'dmg';
+  const el=document.createElement('div');el.className='bb-pop '+cls;el.textContent=text;
   el.style.left=(x-26)+'px';el.style.top=(y-38)+'px';
-  document.body.appendChild(el);
-  setTimeout(()=>{if(el.parentNode)el.parentNode.removeChild(el);},1200);
+  document.body.appendChild(el);setTimeout(()=>{if(el.parentNode)el.parentNode.removeChild(el);},1600);
 }
-function centerOf(id){
-  const r=document.getElementById(id).getBoundingClientRect();
-  return{x:r.left+r.width/2,y:r.top+r.height/2};
-}
+function centerOf(id){const r=document.getElementById(id).getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2};}
 
 const MOVE_BASE={spatula:[15,25],pepper:[20,35],pan:[30,45],taunt:[5,15]};
-const MOVE_LINE={
-  spatula:n=>'You smack '+n+' with your spatula!',
-  pepper: n=>'PEPPER BLAST at '+n+'! 🌶️',
-  pan:    n=>'PAN SLAM on '+n+'! CLANG! 🥘',
-  taunt:  n=>'You taunt '+n+'. It wobbles furiously.',
-};
+const MOVE_LINE={spatula:n=>'You smack '+n+' with your spatula!',pepper:n=>'PEPPER BLAST at '+n+'! 🌶️',pan:n=>'PAN SLAM on '+n+'! CLANG! 🥘',taunt:n=>'You taunt '+n+'. It wobbles furiously.'};
 
 async function playerAction(type){
   if(turnLock)return;turnLock=true;setButtons(false);
-  if(type==='taunt'&&Math.random()<.4){
-    addLog('You taunt… '+state.enemy.name+' RAGES and attacks first!','bad');
-    await enemyTurn(true);if(state.playerHp<=0)return;
-  }
+  if(type==='taunt'&&Math.random()<.4){addLog('You taunt… '+state.enemy.name+' RAGES and attacks first!','bad');await enemyTurn(true);if(state.playerHp<=0)return;}
   const{dmg,tier}=rollHit(...MOVE_BASE[type]);
-  const eC=centerOf('bb-enemy-wrap');
-  const pw=document.getElementById('bb-player-wrap');
+  const eC=centerOf('bb-enemy-wrap'),pw=document.getElementById('bb-player-wrap');
   pw.classList.add('bb-attack');setTimeout(()=>pw.classList.remove('bb-attack'),380);
-  if(tier==='miss'){
-    addLog('You swing… but MISS completely! 💨','weak');
-    spawnPop('MISS!','miss',eC.x,eC.y);
-    const wrap=document.getElementById('bb-enemy-wrap');
-    wrap.style.transition='transform .22s';wrap.style.transform='translateX(24px) rotate(10deg)';
-    setTimeout(()=>{wrap.style.transform='';wrap.style.transition='';},280);
-    await sleep(580);await enemyTurn(false);return;
-  }
-  state.enemyHp-=dmg;
-  addLog(MOVE_LINE[type](state.enemy.name));
-  if(tier==='crit')addLog('💥 CRITICAL HIT! '+dmg+' damage!','crit');
-  else if(tier==='strong')addLog('Heavy blow! '+dmg+' damage!','good');
-  else if(tier==='weak')addLog('Glancing hit… only '+dmg+' damage.','weak');
-  else addLog('Dealt '+dmg+' damage.','good');
+  if(tier==='miss'){addLog('You swing… but MISS completely! 💨','weak');spawnPop('MISS!','miss',eC.x,eC.y);const wrap=document.getElementById('bb-enemy-wrap');wrap.style.transition='transform .22s';wrap.style.transform='translateX(24px) rotate(10deg)';setTimeout(()=>{wrap.style.transform='';wrap.style.transition='';},280);await sleep(580);await enemyTurn(false);return;}
+  state.enemyHp-=dmg;addLog(MOVE_LINE[type](state.enemy.name));
+  if(tier==='crit')addLog('💥 CRITICAL HIT! '+dmg+' damage!','crit');else if(tier==='strong')addLog('Heavy blow! '+dmg+' damage!','good');else if(tier==='weak')addLog('Glancing hit… only '+dmg+' damage.','weak');else addLog('Dealt '+dmg+' damage.','good');
   spawnPop('-'+dmg,tier,eC.x,eC.y);
   const wrap=document.getElementById('bb-enemy-wrap');
   setTimeout(()=>{wrap.classList.add('bb-hit');setFaceExpression('hit');setTimeout(()=>{wrap.classList.remove('bb-hit');updateBars();},460);},210);
-  updateBars();await sleep(700);
-  if(state.enemyHp<=0){showWin();return;}
-  await enemyTurn(false);
+  updateBars();await sleep(700);if(state.enemyHp<=0){showWin();return;}await enemyTurn(false);
 }
-
 async function enemyTurn(instant){
-  if(!instant)await sleep(330);
-  const{dmg,tier}=rollHit(...state.enemy.power);
-  const pC=centerOf('bb-player-wrap');
-  const wrap=document.getElementById('bb-enemy-wrap');
-  wrap.classList.add('bb-attack');setFaceExpression('attack');
-  setTimeout(()=>{wrap.classList.remove('bb-attack');updateBars();},400);
-  if(tier==='miss'){
-    addLog(state.enemy.name+' lunges… but misses! 💨','good');
-    spawnPop('MISS!','miss',pC.x,pC.y);await sleep(480);
-    if(state.playerHp<=0){showLose();return;}
-    turnLock=false;setButtons(true);return;
-  }
+  if(!instant)await sleep(330);const{dmg,tier}=rollHit(...state.enemy.power);
+  const pC=centerOf('bb-player-wrap'),wrap=document.getElementById('bb-enemy-wrap');
+  wrap.classList.add('bb-attack');setFaceExpression('attack');setTimeout(()=>{wrap.classList.remove('bb-attack');updateBars();},400);
+  if(tier==='miss'){addLog(state.enemy.name+' lunges… but misses! 💨','good');spawnPop('MISS!','miss',pC.x,pC.y);await sleep(480);if(state.playerHp<=0){showLose();return;}turnLock=false;setButtons(true);return;}
   state.playerHp-=dmg;
-  if(tier==='crit')addLog('💥 '+state.enemy.name+' CRITS for '+dmg+' damage!','crit');
-  else if(tier==='strong')addLog(state.enemy.name+' slams hard for '+dmg+' damage!','bad');
-  else if(tier==='weak')addLog(state.enemy.name+' grazes you for '+dmg+' damage.','weak');
-  else addLog(state.enemy.name+' sizzles you for '+dmg+' damage!','bad');
+  if(tier==='crit')addLog('💥 '+state.enemy.name+' CRITS for '+dmg+' damage!','crit');else if(tier==='strong')addLog(state.enemy.name+' slams hard for '+dmg+' damage!','bad');else if(tier==='weak')addLog(state.enemy.name+' grazes you for '+dmg+' damage.','weak');else addLog(state.enemy.name+' sizzles you for '+dmg+' damage!','bad');
   spawnPop('-'+dmg,tier,pC.x,pC.y);
-  if(tier==='crit'||tier==='strong'){
-    const w=document.getElementById('bb-window');
-    w.classList.add('bb-shake');setTimeout(()=>w.classList.remove('bb-shake'),400);
-  }
-  const pw=document.getElementById('bb-player-wrap');
-  pw.classList.add('bb-hit');setTimeout(()=>pw.classList.remove('bb-hit'),380);
-  updateBars();await sleep(520);
-  if(state.playerHp<=0){showLose();return;}
-  turnLock=false;setButtons(true);
+  if(tier==='crit'||tier==='strong'){const w=document.getElementById('bb-window');w.classList.add('bb-shake');setTimeout(()=>w.classList.remove('bb-shake'),400);}
+  const pw=document.getElementById('bb-player-wrap');pw.classList.add('bb-hit');setTimeout(()=>pw.classList.remove('bb-hit'),380);
+  updateBars();await sleep(520);if(state.playerHp<=0){showLose();return;}turnLock=false;setButtons(true);
 }
 
 function showWin(){
@@ -824,10 +645,9 @@ function showWin(){
   document.getElementById('bb-result-emoji').textContent='🏆';
   document.getElementById('bb-result-title').style.color='#f1c40f';
   document.getElementById('bb-result-title').textContent='YOU WIN!';
-  document.getElementById('bb-result-sub').innerHTML=
-    `<span class="bb-rarity-badge" style="background:${rar.color}20;border:1px solid ${rar.color};color:${rar.color}">${rar.icon} ${rar.label}</span><br>${state.enemy.name} joins your squad!`;
+  document.getElementById('bb-result-sub').innerHTML=`<span class="bb-rarity-badge" style="background:${rar.color}20;border:1px solid ${rar.color};color:${rar.color}">${rar.icon} ${rar.label}</span><br>${state.enemy.name} joins your squad!`;
+  document.getElementById('bb-result-gp').textContent=`+${rar.gp} 🫙 Grease Points`;
 }
-
 function showLose(){
   turnLock=false;pendingWin=null;
   document.getElementById('bb-combat-view').style.display='none';
@@ -836,19 +656,17 @@ function showLose(){
   document.getElementById('bb-result-title').style.color='#e74c3c';
   document.getElementById('bb-result-title').textContent='YOU LOST!';
   document.getElementById('bb-result-sub').textContent=state.enemy.name+' defeated you. The sizzle of shame lingers.';
+  document.getElementById('bb-result-gp').textContent='';
 }
-
 function handleResultBtn(){
   if(pendingWin){
-    // Only add if not already owned
-    if(!playerTeam.find(b=>b.name===pendingWin.name)){
-      playerTeam.push({name:pendingWin.name,rarity:pendingWin.rarity,level:1});
-    }
-    try{localStorage.setItem('baconTeam',JSON.stringify(playerTeam));}catch(e){}
-    pendingWin=null;
+    const rar=getRarity(pendingWin);greasePoints+=rar.gp;
+    const gpEl=document.getElementById('bb-result-gp');
+    if(gpEl){const r=gpEl.getBoundingClientRect();spawnPop('+'+rar.gp+' 🫙','gp',r.left+r.width/2,r.top+10);}
+    if(!playerTeam.find(b=>b.name===pendingWin.name))playerTeam.push({name:pendingWin.name,rarity:pendingWin.rarity,level:1});
+    saveState();pendingWin=null;
   }
-  closeBattle();
-  renderTeam();
+  closeBattle();renderTeam();updateGPDisplay();
 }
 
 function renderTeam(){
@@ -856,23 +674,124 @@ function renderTeam(){
   if(!playerTeam.length){grid.innerHTML='<div class="empty-team">No bacons yet — win battles to recruit them!</div>';return;}
   grid.innerHTML='';
   playerTeam.forEach(b=>{
-    const cfg=ALL_BACONS.find(e=>e.name===b.name)||ALL_BACONS[0];
-    const rar=getRarity(cfg);
-    const card=document.createElement('div');
-    card.className='team-card';
-    card.style.borderColor=rar.color;
-    card.style.boxShadow='0 0 8px '+rar.color+'40';
+    const cfg=getCfg(b),rar=RARITY[b.rarity]||RARITY.common;
+    const card=document.createElement('div');card.className='team-card';
+    card.style.borderColor=rar.color;card.style.boxShadow='0 0 8px '+rar.color+'40';
     card.innerHTML=`<div style="flex-shrink:0;line-height:0">${buildFace(cfg,46)}</div>
       <div>
         <div class="card-name">${b.name}</div>
-        <div class="card-rarity" style="color:${rar.color}">${rar.icon} ${rar.label}</div>
+        <div class="card-rarity" style="color:${rar.color}">${rar.icon} ${rar.label}${b.combined?' ✨':''}</div>
         <div class="card-lv">Lv.${b.level} · ${rar.label} Rasher</div>
       </div>`;
     grid.appendChild(card);
   });
 }
 
+// ── COMBINE ──────────────────────────────────────────────────
+let combSlotA=null,combSlotB=null,pickingSlot=null;
+
+function openCombine(){
+  combSlotA=null;combSlotB=null;
+  resetSlot('a');resetSlot('b');updateCombinePreview();
+  document.getElementById('comb-gp-have').textContent=greasePoints;
+  document.getElementById('combine-overlay').classList.add('active');
+}
+function closeCombine(){document.getElementById('combine-overlay').classList.remove('active');closeBaconPicker();}
+function resetSlot(slot){
+  document.getElementById('comb-slot-'+slot+'-face').innerHTML='';
+  document.getElementById('comb-slot-'+slot+'-label').textContent='Click to pick';
+  document.getElementById('comb-slot-'+slot).classList.remove('filled');
+}
+function openBaconPicker(slot){
+  pickingSlot=slot;
+  const other=slot==='a'?combSlotB:combSlotA;
+  const grid=document.getElementById('comb-pick-grid');grid.innerHTML='';
+  document.getElementById('comb-pick-title').textContent='PICK BACON '+(slot==='a'?'A':'B');
+  playerTeam.forEach(b=>{
+    const cfg=getCfg(b),rar=RARITY[b.rarity]||RARITY.common;
+    const card=document.createElement('div');card.className='comb-pick-card';
+    if(other&&other.name===b.name)card.classList.add('dimmed');
+    card.style.borderColor=rar.color;
+    card.innerHTML=`<div style="line-height:0">${buildFace(cfg,52)}</div>
+      <div class="comb-pick-name">${b.name}</div>
+      <div class="comb-pick-rarity" style="color:${rar.color}">${rar.icon} ${rar.label}</div>`;
+    card.onclick=()=>{selectBacon(slot,b);closeBaconPicker();};
+    grid.appendChild(card);
+  });
+  document.getElementById('comb-pick-overlay').style.display='flex';
+}
+function closeBaconPicker(){document.getElementById('comb-pick-overlay').style.display='none';pickingSlot=null;}
+function selectBacon(slot,b){
+  if(slot==='a')combSlotA=b;else combSlotB=b;
+  const cfg=getCfg(b),rar=RARITY[b.rarity]||RARITY.common;
+  document.getElementById('comb-slot-'+slot+'-face').innerHTML=buildFace(cfg,56);
+  document.getElementById('comb-slot-'+slot+'-label').innerHTML=`<div class="comb-slot-name">${b.name}</div><div class="comb-slot-rarity" style="color:${rar.color}">${rar.icon} ${rar.label}</div>`;
+  document.getElementById('comb-slot-'+slot).classList.add('filled');
+  updateCombinePreview();
+}
+
+function blendHex(a,b){
+  const p=c=>{c=c.replace('#','');if(c.length===3)c=c.split('').map(x=>x+x).join('');return parseInt(c,16);};
+  const[aV,bV]=[p(a),p(b)];
+  const r=Math.round(((aV>>16)+(bV>>16))/2),g=Math.round((((aV>>8)&0xff)+((bV>>8)&0xff))/2),bl=Math.round(((aV&0xff)+(bV&0xff))/2);
+  return'#'+[r,g,bl].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+
+function getCombineResult(){
+  if(!combSlotA||!combSlotB)return null;
+  const iA=RARITY_ORDER.indexOf(combSlotA.rarity),iB=RARITY_ORDER.indexOf(combSlotB.rarity);
+  const resultRar=RARITY_ORDER[Math.min(Math.max(iA,iB)+1,RARITY_ORDER.length-1)];
+  const cfgA=getCfg(combSlotA),cfgB=getCfg(combSlotB);
+  const nameA=combSlotA.name.split(/[\s×]/)[0],nameB=combSlotB.name.split(/[\s×]/).pop();
+  const combinedName=nameA+' × '+nameB;
+  const resultCfg={
+    name:combinedName,rarity:resultRar,level:1,combined:true,
+    hp:Math.round((cfgA.hp+cfgB.hp)*0.65),
+    power:[Math.round((cfgA.power[0]+cfgB.power[0])*0.6),Math.round((cfgA.power[1]+cfgB.power[1])*0.6)],
+    bodyColor:blendHex(cfgA.bodyColor,cfgB.bodyColor),
+    fatColor:blendHex(cfgA.fatColor||'#e8d08a',cfgB.fatColor||'#e8d08a'),
+    eyeColor:cfgA.eyeColor,angryBrows:cfgA.angryBrows||cfgB.angryBrows,
+    blush:(cfgA.blush+cfgB.blush)/2,sweat:false,boss:false,
+    mouthPath:'36,88 Q54,98 72,88',extras:'combined',
+    flavor:'A sizzling fusion of '+combSlotA.name+' and '+combSlotB.name+'.'
+  };
+  const cost=(RARITY[combSlotA.rarity]||RARITY.common).combCost+(RARITY[combSlotB.rarity]||RARITY.common).combCost;
+  return{resultCfg,cost,resultRar};
+}
+
+function updateCombinePreview(){
+  const result=getCombineResult();
+  const previewFace=document.getElementById('comb-preview-face');
+  const previewName=document.getElementById('comb-preview-name');
+  const previewDesc=document.getElementById('comb-preview-desc');
+  const costEl=document.getElementById('comb-cost-display');
+  const doBtn=document.getElementById('comb-do-btn');
+  if(!result){
+    previewFace.innerHTML='<div style="font-size:2.5rem;opacity:.2">❓</div>';
+    previewName.textContent='';previewDesc.textContent='';
+    costEl.textContent='Pick 2 bacons';costEl.className='comb-cost-val';doBtn.disabled=true;return;
+  }
+  const{resultCfg,cost,resultRar}=result,rar=RARITY[resultRar];
+  previewFace.innerHTML=buildFace(resultCfg,68);
+  previewName.textContent=resultCfg.name;previewName.style.color=rar.color;
+  previewDesc.innerHTML=`${rar.icon} ${rar.label}<br>HP: ${resultCfg.hp} · PWR: ${resultCfg.power[0]}–${resultCfg.power[1]}`;
+  const canAfford=greasePoints>=cost;
+  costEl.textContent=cost+' GP';costEl.className='comb-cost-val'+(canAfford?'':' cant-afford');
+  doBtn.disabled=!canAfford;
+}
+
+function doCombine(){
+  const result=getCombineResult();if(!result)return;
+  const{resultCfg,cost}=result;if(greasePoints<cost)return;
+  greasePoints-=cost;
+  playerTeam=playerTeam.filter(b=>b.name!==combSlotA.name&&b.name!==combSlotB.name);
+  playerTeam.push(resultCfg);
+  saveState();closeCombine();renderTeam();updateGPDisplay();
+  setTimeout(()=>{const cards=document.querySelectorAll('.team-card');if(cards.length)cards[cards.length-1].classList.add('combine-flash');},80);
+}
+
 renderTeam();
+updateGPDisplay();
 </script>
 </body>
 </html>
