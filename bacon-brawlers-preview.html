@@ -476,7 +476,7 @@ function getCfg(b){
 }
 
 // ── Spawn ────────────────────────────────────────────────────
-const SPAWN_MIN=20,SPAWN_MAX=50,VISIBLE_MIN=15,VISIBLE_MAX=30;
+const SPAWN_MIN=3,SPAWN_MAX=3,VISIBLE_MIN=15,VISIBLE_MAX=30;
 let spawnTimeout=null,despawnTimeout=null,timerInterval=null,timerDeadline=0,timerMode='';
 let iconVisible=false,battleOpen=false;
 function rndBetween(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
